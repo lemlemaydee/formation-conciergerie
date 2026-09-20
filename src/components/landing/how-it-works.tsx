@@ -1,3 +1,5 @@
+import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
+
 const STEPS = [
   {
     number: "01",
@@ -17,7 +19,7 @@ const STEPS = [
   {
     number: "04",
     title: "Rejoignez la communauté",
-    description: "Échangez, trouvez des réponses et scalez plus vite.",
+    description: "Échangez, trouvez des réponses et avancez plus vite.",
   },
 ];
 
@@ -25,15 +27,15 @@ export function HowItWorks() {
   return (
     <section className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
             Comment ça marche
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <RevealGroup className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {STEPS.map((step, index) => (
-            <div key={step.number} className="relative">
+            <RevealItem key={step.number} className="relative">
               <div className="flex items-center gap-3 lg:block">
                 <span className="text-3xl font-bold text-primary/25 sm:text-4xl">
                   {step.number}
@@ -51,9 +53,9 @@ export function HowItWorks() {
                   className="absolute top-4 right-0 hidden h-px w-6 -translate-y-1/2 translate-x-full bg-border lg:block"
                 />
               )}
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

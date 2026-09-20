@@ -1,11 +1,12 @@
 import { MessageCircle, Radio, Users } from "lucide-react";
+import { Reveal } from "@/components/landing/reveal";
 
 export function CommunityPreview() {
   return (
-    <section className="border-t border-border">
+    <section id="communaute" className="scroll-mt-20 border-t border-border">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="text-center lg:text-left">
+          <Reveal className="text-center lg:text-left">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
               <Users className="size-3.5" />
               Communauté
@@ -21,10 +22,10 @@ export function CommunityPreview() {
             <p className="mt-3 text-sm text-muted-foreground">
               Incluse à vie dès le palier Croissance, ou en abonnement à part.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none">
-            <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-tr from-primary/15 via-transparent to-transparent blur-2xl" />
+          <Reveal delay={0.15} className="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none">
+            <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-tr from-primary/15 via-gold/10 to-transparent blur-2xl" />
 
             <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-xl">
               <div className="flex items-center gap-2 border-b border-border pb-3">
@@ -63,7 +64,7 @@ export function CommunityPreview() {
                 </p>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

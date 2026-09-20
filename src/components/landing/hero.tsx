@@ -6,9 +6,9 @@ import { CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const STATS = [
-  { value: "500+", label: "élèves accompagnés" },
-  { value: "10 000+", label: "biens gérés par la communauté" },
-  { value: "4,8/5", label: "note moyenne" },
+  { value: "120+", label: "biens en gestion, du studio à la villa" },
+  { value: "Monaco", label: "& Côte d'Azur" },
+  { value: "UHNW", label: "clientèle premium & villas de luxe" },
 ];
 
 function HeroVisual() {
@@ -19,7 +19,7 @@ function HeroVisual() {
       transition={{ duration: 0.6, delay: 0.2 }}
       className="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none"
     >
-      <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-br from-primary/20 via-primary/5 to-transparent blur-2xl" />
+      <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-br from-primary/20 via-gold/10 to-transparent blur-2xl" />
 
       <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
         <div className="mb-4 flex items-center justify-between">
@@ -41,7 +41,7 @@ function HeroVisual() {
             "Acquisition de propriétaires",
           ].map((item) => (
             <li key={item} className="flex items-center gap-2 text-sm text-foreground">
-              <CheckCircle2 className="size-4 shrink-0 text-primary" />
+              <CheckCircle2 className="size-4 shrink-0 text-emerald" />
               {item}
             </li>
           ))}
@@ -67,12 +67,12 @@ function HeroVisual() {
         transition={{ duration: 0.5, delay: 0.9 }}
         className="absolute -bottom-5 -left-5 flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg sm:-left-8"
       >
-        <div className="flex text-primary">
+        <div className="flex text-gold">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} className="size-3.5 fill-current" />
           ))}
         </div>
-        <span className="text-xs font-medium text-foreground">4,8/5</span>
+        <span className="text-xs font-medium text-foreground">Villas & UHNW</span>
       </motion.div>
     </motion.div>
   );
@@ -89,36 +89,31 @@ export function Hero() {
           className="text-center lg:text-left"
         >
           <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
-            Formation & conciergerie Airbnb
+            Formation conciergerie Airbnb
           </span>
 
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-            Lancez et scalez votre conciergerie Airbnb, pas à pas
+            La méthode d&apos;une conciergerie qui gère déjà 120+ biens
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground lg:mx-0">
-            La méthode, les outils et la communauté pour transformer la
-            gestion locative courte durée en activité rentable — que vous
-            gériez 0 ou 100 biens.
+            Formation créée par des opérateurs actifs, pas par des formateurs
+            qui ont arrêté de pratiquer. Ce qu&apos;on vous montre, c&apos;est
+            ce qu&apos;on applique nous-mêmes, du studio à la villa de luxe.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-            <Button
-              render={<Link href="/formation" />}
-              nativeButton={false}
-              size="lg"
-              className="w-full sm:w-auto"
-            >
+            <Button render={<Link href="/formation" />} nativeButton={false} size="lg" className="w-full sm:w-auto">
               Voir les formules
             </Button>
             <Button
-              render={<Link href="/services" />}
+              render={<Link href="#programme" />}
               nativeButton={false}
               size="lg"
               variant="outline"
               className="w-full sm:w-auto"
             >
-              Découvrir la conciergerie déléguée
+              Voir le programme
             </Button>
           </div>
 

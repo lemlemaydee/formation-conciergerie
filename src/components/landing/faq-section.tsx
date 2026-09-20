@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Reveal } from "@/components/landing/reveal";
 
 const FAQS = [
   {
@@ -35,26 +36,28 @@ const FAQS = [
 
 export function FaqSection() {
   return (
-    <section className="border-t border-border">
+    <section id="faq" className="scroll-mt-20 border-t border-border">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="text-center">
+        <Reveal className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
             Questions fréquentes
           </h2>
-        </div>
+        </Reveal>
 
-        <Accordion className="mt-10 w-full">
-          {FAQS.map((faq, index) => (
-            <AccordionItem key={faq.question} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-base font-medium">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <Reveal delay={0.1}>
+          <Accordion className="mt-10 w-full">
+            {FAQS.map((faq, index) => (
+              <AccordionItem key={faq.question} value={`item-${index}`}>
+                <AccordionTrigger className="text-left text-base font-medium">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
       </div>
     </section>
   );

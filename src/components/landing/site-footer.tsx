@@ -32,15 +32,15 @@ const COLUMNS = [
     title: "Produit",
     links: [
       { label: "Formation", href: "/formation" },
-      { label: "Services conciergerie", href: "/services" },
-      { label: "Tarifs", href: "/tarifs" },
-      { label: "Communauté", href: "/communaute" },
+      { label: "Programme", href: "#programme" },
+      { label: "Tarifs", href: "#tarifs" },
+      { label: "Communauté", href: "#communaute" },
     ],
   },
   {
     title: "Entreprise",
     links: [
-      { label: "À propos", href: "/a-propos" },
+      { label: "Qui sommes-nous", href: "#equipe" },
       { label: "Témoignages", href: "/temoignages" },
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contact" },

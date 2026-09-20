@@ -1,9 +1,9 @@
 import { SiteHeader } from "@/components/landing/site-header";
 import { Hero } from "@/components/landing/hero";
 import { ProblemSection } from "@/components/landing/problem-section";
-import { SolutionSection } from "@/components/landing/solution-section";
+import { ProgrammeSection } from "@/components/landing/programme-section";
+import { TeamSection } from "@/components/landing/team-section";
 import { HowItWorks } from "@/components/landing/how-it-works";
-import { StatsSection } from "@/components/landing/stats-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { CommunityPreview } from "@/components/landing/community-preview";
 import { PricingPreview } from "@/components/landing/pricing-preview";
@@ -17,9 +17,9 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
-        <StatsSection />
         <ProblemSection />
-        <SolutionSection />
+        <ProgrammeSection />
+        <TeamSection />
         <HowItWorks />
         <TestimonialsSection />
         <CommunityPreview />

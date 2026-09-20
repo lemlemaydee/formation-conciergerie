@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/sheet";
 
 const NAV_LINKS = [
-  { href: "/services", label: "Services" },
-  { href: "/formation", label: "Formation" },
-  { href: "/communaute", label: "Communauté" },
-  { href: "/tarifs", label: "Tarifs" },
+  { href: "#programme", label: "Programme" },
+  { href: "#equipe", label: "Équipe" },
+  { href: "#communaute", label: "Communauté" },
+  { href: "#tarifs", label: "Tarifs" },
 ];
 
 function Logo() {
