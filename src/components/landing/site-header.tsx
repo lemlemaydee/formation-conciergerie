@@ -42,7 +42,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo />
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -54,7 +54,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/connexion"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -72,7 +72,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="lg:hidden"
                 aria-label="Ouvrir le menu"
               />
             }

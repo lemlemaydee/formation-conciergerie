@@ -135,8 +135,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(ellipse 800px 500px at 15% -10%, oklch(0.38 0.195 263.3 / 8%), transparent),
+      radial-gradient(ellipse 600px 400px at 90% 15%, oklch(0.72 0.13 78 / 6%), transparent);
+    background-repeat: no-repeat;
   }
   html {
     @apply font-sans;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
   }
 }

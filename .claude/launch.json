@@ -3,8 +3,11 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "/Users/mehdimadaci/.nvm/versions/node/v24.21.0/bin/npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"/Users/mehdimadaci/.nvm/versions/node/v24.21.0/bin:$PATH\" && exec npm run dev"
+      ],
       "port": 3000
     }
   ]
