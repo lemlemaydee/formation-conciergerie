@@ -24,12 +24,15 @@ export function FinalCta() {
               >
                 Voir les formules
               </Button>
-              <Link
-                href="#faq"
-                className="text-sm font-medium text-primary-foreground/80 underline-offset-4 hover:text-primary-foreground hover:underline"
+              <Button
+                render={<Link href="/contact" />}
+                nativeButton={false}
+                size="lg"
+                variant="outline"
+                className="w-full border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
               >
-                Des questions ? Voir la FAQ
-              </Link>
+                Réserver un appel
+              </Button>
             </div>
           </div>
         </Reveal>

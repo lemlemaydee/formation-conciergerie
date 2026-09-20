@@ -32,7 +32,25 @@ export async function updateSession(request: NextRequest) {
 
   // Do not add logic between createServerClient and getUser(): it refreshes
   // the auth token, and skipping it causes random logouts.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { pathname } = request.nextUrl;
+  const isProtected = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+  const isAuthPage = pathname === "/connexion" || pathname === "/inscription";
+
+  if (!user && isProtected) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/connexion";
+    return NextResponse.redirect(url);
+  }
+
+  if (user && isAuthPage) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }

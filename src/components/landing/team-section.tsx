@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useInView } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
 
 const FOUNDERS = [
@@ -95,6 +96,16 @@ export function TeamSection() {
               </p>
             </div>
           </div>
+        </Reveal>
+
+        <Reveal delay={0.2} className="mt-6 text-center">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Envie d&apos;en discuter directement ? Réservez un appel
+            <ArrowRight className="size-3.5" />
+          </Link>
         </Reveal>
       </div>
     </section>

@@ -12,6 +12,7 @@ const TIERS = [
     period: "paiement unique",
     features: ["Formation complète", "Accès au dashboard", "Ressources téléchargeables"],
     featured: false,
+    href: "/formation",
   },
   {
     name: "Croissance",
@@ -24,6 +25,7 @@ const TIERS = [
       "Accès aux lives hebdomadaires",
     ],
     featured: true,
+    href: "/formation",
   },
   {
     name: "Sur-mesure",
@@ -32,6 +34,7 @@ const TIERS = [
     period: "accompagnement personnalisé",
     features: ["Audit personnalisé", "Accompagnement dédié", "Tout inclus"],
     featured: false,
+    href: "/contact",
   },
 ];
 
@@ -79,13 +82,13 @@ export function PricingPreview() {
                 </ul>
 
                 <Button
-                  render={<Link href="/formation" />}
+                  render={<Link href={tier.href} />}
                   nativeButton={false}
                   size="lg"
                   variant={tier.featured ? "default" : "outline"}
                   className="mt-8 w-full"
                 >
-                  {tier.price === "Sur demande" ? "Demander un devis" : "Choisir ce palier"}
+                  {tier.price === "Sur demande" ? "Réserver un appel" : "Choisir ce palier"}
                 </Button>
               </div>
             </RevealItem>
