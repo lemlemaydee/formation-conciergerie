@@ -1,18 +1,33 @@
-import { Button } from "@/components/ui/button";
+import { SiteHeader } from "@/components/landing/site-header";
+import { Hero } from "@/components/landing/hero";
+import { ProblemSection } from "@/components/landing/problem-section";
+import { SolutionSection } from "@/components/landing/solution-section";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { StatsSection } from "@/components/landing/stats-section";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { CommunityPreview } from "@/components/landing/community-preview";
+import { PricingPreview } from "@/components/landing/pricing-preview";
+import { FaqSection } from "@/components/landing/faq-section";
+import { FinalCta } from "@/components/landing/final-cta";
+import { SiteFooter } from "@/components/landing/site-footer";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6 text-center">
-      <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-        Fondations du projet
-      </p>
-      <h1 className="max-w-xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-        Formation & Conciergerie Airbnb
-      </h1>
-      <p className="max-w-md text-muted-foreground">
-        Next.js 16 · Tailwind CSS v4 · shadcn/ui · Supabase — prêt pour la suite.
-      </p>
-      <Button size="lg">Rejoindre la formation</Button>
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <main className="flex-1">
+        <Hero />
+        <StatsSection />
+        <ProblemSection />
+        <SolutionSection />
+        <HowItWorks />
+        <TestimonialsSection />
+        <CommunityPreview />
+        <PricingPreview />
+        <FaqSection />
+        <FinalCta />
+      </main>
+      <SiteFooter />
     </div>
   );
 }
