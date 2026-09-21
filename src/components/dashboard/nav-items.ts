@@ -12,6 +12,7 @@ import {
   CalendarClock,
   BarChart3,
   Wrench,
+  Clapperboard,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -41,6 +42,7 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
   { href: "/admin", label: "Vue d'ensemble", icon: LayoutDashboard, exact: true },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/contenus", label: "Contenus", icon: Video },
+  { href: "/admin/temoignages", label: "Témoignages vidéo", icon: Clapperboard },
   { href: "/admin/rendez-vous", label: "Rendez-vous", icon: CalendarClock },
   { href: "/admin/statistiques", label: "Statistiques", icon: BarChart3 },
   { href: "/admin/outils", label: "Outils affiliés", icon: Wrench },
