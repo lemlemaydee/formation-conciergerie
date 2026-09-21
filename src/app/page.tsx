@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/landing/site-header";
 import { Hero } from "@/components/landing/hero";
+import { PlatformsSection } from "@/components/landing/platforms-section";
 import { ProblemSection } from "@/components/landing/problem-section";
 import { ProgrammeSection } from "@/components/landing/programme-section";
 import { TeamSection } from "@/components/landing/team-section";
@@ -17,6 +18,7 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
+        <PlatformsSection />
         <ProblemSection />
         <ProgrammeSection />
         <TeamSection />

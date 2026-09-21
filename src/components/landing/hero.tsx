@@ -6,12 +6,6 @@ import { CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GradientText } from "@/components/landing/gradient-text";
 
-const STATS = [
-  { value: "120+", label: "biens en gestion, du studio à la villa" },
-  { value: "Monaco", label: "& Côte d'Azur" },
-  { value: "UHNW", label: "clientèle premium & villas de luxe" },
-];
-
 function HeroVisual() {
   return (
     <motion.div
@@ -118,20 +112,6 @@ export function Hero() {
               Voir le programme
             </Button>
           </div>
-
-          <dl className="mt-12 grid grid-cols-3 gap-4 border-t border-border pt-8">
-            {STATS.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd className="text-xl font-bold text-foreground sm:text-2xl">
-                  {stat.value}
-                </dd>
-                <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </dl>
         </motion.div>
 
         <HeroVisual />

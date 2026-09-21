@@ -4,7 +4,7 @@ import { GradientText } from "@/components/landing/gradient-text";
 
 export function CommunityPreview() {
   return (
-    <section id="communaute" className="scroll-mt-20 border-t border-border">
+    <section id="communaute" className="scroll-mt-20 overflow-hidden border-t border-border">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal className="text-center lg:text-left">
