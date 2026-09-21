@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FAQ } from "@/components/ui/faq-tabs";
 import { Reveal } from "@/components/landing/reveal";
 
@@ -70,6 +71,14 @@ export function FaqSection() {
         title="Questions fréquentes"
         categories={categories}
         faqData={faqData}
+        footer={
+          <p className="text-sm text-muted-foreground">
+            Vous ne trouvez pas votre réponse ?{" "}
+            <Link href="/contact" className="font-medium text-primary underline-offset-4 hover:underline">
+              Réservez un appel
+            </Link>
+          </p>
+        }
       />
     </Reveal>
   );

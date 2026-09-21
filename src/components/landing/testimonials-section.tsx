@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 const TESTIMONIALS = [
   {
@@ -28,8 +29,8 @@ export function TestimonialsSection() {
     <section className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            Ils ont lancé leur conciergerie
+          <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+            Ils ont lancé <GradientText>leur conciergerie</GradientText>
           </h2>
         </Reveal>
 

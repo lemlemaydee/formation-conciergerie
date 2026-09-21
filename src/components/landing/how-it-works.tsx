@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HowItWorksCards, type HowItWorksStep } from "@/components/ui/how-it-works-cards";
 import { Reveal } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 const COLORS = {
   primary: { bg: "bg-primary/8", text: "text-primary", border: "border-primary/20" },
@@ -53,8 +54,8 @@ export function HowItWorks() {
               <span className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
                 Le parcours
               </span>
-              <h2 className="mt-6 text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-                Comment ça marche
+              <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                <GradientText>Comment ça marche</GradientText>
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
                 De l&apos;achat de votre formule à votre premier propriétaire, chaque étape est

@@ -37,7 +37,7 @@ function Card({ number, title, description, colors, className, rotate }: CardPro
   return (
     <div
       className={cn(
-        "relative w-full transition-transform duration-300 hover:z-30 hover:scale-105 md:w-[280px]",
+        "relative w-full transition-transform duration-300 hover:z-30 hover:scale-105 md:w-[230px]",
         rotate,
         className,
       )}
@@ -74,11 +74,11 @@ export interface StepPosition {
 }
 
 const DEFAULT_POSITIONS: StepPosition[] = [
-  { className: "md:absolute md:top-0 md:left-[15%]", rotate: "rotate-8" },
-  { className: "md:absolute md:top-[120px] md:right-[15%]", rotate: "-rotate-8" },
-  { className: "md:absolute md:top-[450px] md:left-[15%]", rotate: "rotate-8" },
-  { className: "md:absolute md:top-[570px] md:right-[10%]", rotate: "-rotate-8" },
-  { className: "md:absolute md:top-[850px] md:left-[15%]", rotate: "rotate-8" },
+  { className: "md:absolute md:top-0 md:left-[8%]", rotate: "rotate-6" },
+  { className: "md:absolute md:top-[280px] md:right-[8%]", rotate: "-rotate-6" },
+  { className: "md:absolute md:top-[600px] md:left-[8%]", rotate: "rotate-6" },
+  { className: "md:absolute md:top-[880px] md:right-[8%]", rotate: "-rotate-6" },
+  { className: "md:absolute md:top-[1200px] md:left-[8%]", rotate: "rotate-6" },
 ];
 
 export function HowItWorksCards({
@@ -90,11 +90,11 @@ export function HowItWorksCards({
   positions?: StepPosition[];
   className?: string;
 }) {
-  let height = 1130;
+  let height = 1500;
   if (steps.length === 1) height = 400;
-  else if (steps.length === 2) height = 450;
-  else if (steps.length === 3) height = 800;
-  else if (steps.length === 4) height = 900;
+  else if (steps.length === 2) height = 500;
+  else if (steps.length === 3) height = 900;
+  else if (steps.length === 4) height = 1180;
 
   return (
     <LazyMotion features={domAnimation}>
@@ -112,10 +112,10 @@ export function HowItWorksCards({
               {(() => {
                 const pathD = steps.reduce((acc, _, index) => {
                   if (index >= steps.length - 1) return acc;
-                  if (index === 0) return "M 290 150 C 500 150, 550 270, 710 270";
-                  if (index === 1) return acc + " C 850 270, 500 350, 290 450";
-                  if (index === 2) return acc + " C 290 600, 550 720, 750 720";
-                  if (index === 3) return acc + " C 950 720, 500 800, 290 850";
+                  if (index === 0) return "M 290 200 C 500 200, 550 360, 710 360";
+                  if (index === 1) return acc + " C 850 360, 500 480, 290 600";
+                  if (index === 2) return acc + " C 290 800, 550 960, 750 960";
+                  if (index === 3) return acc + " C 950 960, 500 1080, 290 1131";
                   return acc;
                 }, "");
                 return (

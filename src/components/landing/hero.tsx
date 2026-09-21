@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GradientText } from "@/components/landing/gradient-text";
 
 const STATS = [
   { value: "120+", label: "biens en gestion, du studio à la villa" },
@@ -92,8 +93,9 @@ export function Hero() {
             Formation conciergerie Airbnb
           </span>
 
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-            La méthode d&apos;une conciergerie qui gère déjà 120+ biens
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
+            La méthode d&apos;une conciergerie qui gère déjà{" "}
+            <GradientText>120+ biens</GradientText>
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground lg:mx-0">

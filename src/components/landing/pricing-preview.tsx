@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 const TIERS = [
   {
@@ -43,8 +44,8 @@ export function PricingPreview() {
     <section id="tarifs" className="scroll-mt-20 border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            Un palier pour chaque étape
+          <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+            Un palier pour <GradientText>chaque étape</GradientText>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Le prix dépend du nombre de biens que vous gérez déjà.

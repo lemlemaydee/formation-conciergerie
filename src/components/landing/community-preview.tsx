@@ -1,5 +1,6 @@
 import { MessageCircle, Radio, Users } from "lucide-react";
 import { Reveal } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 export function CommunityPreview() {
   return (
@@ -11,8 +12,8 @@ export function CommunityPreview() {
               <Users className="size-3.5" />
               Communauté
             </span>
-            <h2 className="mt-6 text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-              Une communauté active, pas un forum qui dort
+            <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+              Une <GradientText>communauté active</GradientText>, pas un forum qui dort
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
               Des espaces d&apos;échange par thématique (acquisition,

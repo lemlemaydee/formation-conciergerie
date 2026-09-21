@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ export interface FaqProps {
   categories: Record<string, string>;
   faqData: Record<string, FaqItem[]>;
   className?: string;
+  footer?: ReactNode;
 }
 
 export function FAQ({
@@ -26,6 +27,7 @@ export function FAQ({
   categories,
   faqData,
   className,
+  footer,
 }: FaqProps) {
   const categoryKeys = Object.keys(categories);
   const [selectedCategory, setSelectedCategory] = useState(categoryKeys[0]);
@@ -41,6 +43,7 @@ export function FAQ({
       <FAQHeader title={title} subtitle={subtitle} />
       <FAQTabs categories={categories} selected={selectedCategory} setSelected={setSelectedCategory} />
       <FAQList faqData={faqData} selected={selectedCategory} />
+      {footer && <div className="relative z-10 mx-auto mt-10 max-w-3xl text-center">{footer}</div>}
     </section>
   );
 }
@@ -51,8 +54,10 @@ function FAQHeader({ title, subtitle }: { title: string; subtitle: string }) {
       <span className="mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text font-medium text-transparent">
         {subtitle}
       </span>
-      <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-        {title}
+      <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+        <span className="bg-gradient-to-r from-primary via-primary to-primary/50 bg-clip-text text-transparent">
+          {title}
+        </span>
       </h2>
       <span className="absolute -top-[350px] left-[50%] z-0 h-[500px] w-[600px] -translate-x-[50%] rounded-full bg-gradient-to-r from-primary/10 to-gold/10 blur-3xl" />
     </div>

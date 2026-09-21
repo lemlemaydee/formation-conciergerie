@@ -8,8 +8,12 @@ export function FinalCta() {
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <Reveal>
           <div className="rounded-2xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12 sm:py-20">
-            <h2 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-              Prêt à lancer votre conciergerie Airbnb ?
+            <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
+              Prêt à lancer votre{" "}
+              <span className="bg-gradient-to-r from-gold to-primary-foreground bg-clip-text text-transparent">
+                conciergerie Airbnb
+              </span>{" "}
+              ?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
               Choisissez votre palier et accédez immédiatement à votre dashboard.

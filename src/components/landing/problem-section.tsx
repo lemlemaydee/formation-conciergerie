@@ -1,5 +1,6 @@
 import { Clock, Compass, Users } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 const PAIN_POINTS = [
   {
@@ -14,7 +15,7 @@ const PAIN_POINTS = [
     title: "Aucune méthode claire",
     description:
       "Trouver des propriétaires, fixer ses prix, structurer son offre : on apprend à ses dépens, en perdant des mois.",
-    accent: "bg-gold/15 text-gold-foreground",
+    accent: "bg-gold/15 text-gold",
   },
   {
     icon: Users,
@@ -30,8 +31,8 @@ export function ProblemSection() {
     <section className="border-t border-border">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            Gérer seul sa conciergerie, ça plafonne vite
+          <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+            Gérer seul sa conciergerie, <GradientText>ça plafonne vite</GradientText>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             La plupart des conciergeries Airbnb stagnent pour les mêmes
