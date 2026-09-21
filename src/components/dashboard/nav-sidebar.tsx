@@ -3,17 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
+import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS } from "@/components/dashboard/nav-items";
 
-export interface NavItem {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-  exact?: boolean;
-}
-
-export function NavSidebar({ items, brandLabel }: { items: NavItem[]; brandLabel: string }) {
+export function NavSidebar({
+  variant,
+  brandLabel,
+}: {
+  variant: "dashboard" | "admin";
+  brandLabel: string;
+}) {
   const pathname = usePathname();
+  const items = variant === "admin" ? ADMIN_NAV_ITEMS : DASHBOARD_NAV_ITEMS;
 
   return (
     <aside className="hidden w-64 shrink-0 border-r border-border bg-card md:flex md:flex-col">

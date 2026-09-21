@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -22,20 +23,21 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import type { NavItem } from "@/components/dashboard/nav-sidebar";
+import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS } from "@/components/dashboard/nav-items";
 
 export function Topbar({
-  items,
+  variant,
   brandLabel,
   userLabel,
   userEmail,
 }: {
-  items: NavItem[];
+  variant: "dashboard" | "admin";
   brandLabel: string;
   userLabel: string;
   userEmail: string;
 }) {
   const [open, setOpen] = useState(false);
+  const items = variant === "admin" ? ADMIN_NAV_ITEMS : DASHBOARD_NAV_ITEMS;
   const initials = userLabel.slice(0, 2).toUpperCase() || "CC";
 
   return (
@@ -80,21 +82,27 @@ export function Topbar({
           <span className="hidden text-sm font-medium sm:inline">{userLabel}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
-            {userEmail}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem render={<Link href="/dashboard/mon-compte" />}>
-            <UserIcon className="size-4" />
-            Mon compte
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <form action={logout}>
-            <DropdownMenuItem render={<button type="submit" className="w-full" />} variant="destructive">
-              <LogOut className="size-4" />
-              Se déconnecter
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
+              {userEmail}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem render={<Link href="/dashboard/mon-compte" />}>
+              <UserIcon className="size-4" />
+              Mon compte
             </DropdownMenuItem>
-          </form>
+            <DropdownMenuSeparator />
+            <form action={logout}>
+              <DropdownMenuItem
+                render={<button type="submit" className="w-full" />}
+                nativeButton={true}
+                variant="destructive"
+              >
+                <LogOut className="size-4" />
+                Se déconnecter
+              </DropdownMenuItem>
+            </form>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
