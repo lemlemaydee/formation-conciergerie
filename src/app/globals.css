@@ -51,8 +51,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --animate-marquee: marquee var(--duration, 20s) linear infinite;
-  --animate-marquee-vertical: marquee-vertical var(--duration, 20s) linear infinite;
+  --animate-marquee: marquee var(--duration, 40s) linear infinite;
 }
 
 @keyframes marquee {
@@ -60,16 +59,7 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-100% - var(--gap, 1rem)));
-  }
-}
-
-@keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(calc(-100% - var(--gap, 1rem)));
+    transform: translateX(-50%);
   }
 }
 
