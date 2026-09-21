@@ -51,11 +51,11 @@ export function FAQ({
 function FAQHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center text-center">
-      <span className="mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text font-medium text-transparent">
+      <span className="mb-4 bg-gradient-to-r from-primary to-primary-light bg-clip-text font-medium text-transparent">
         {subtitle}
       </span>
       <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-        <span className="bg-gradient-to-r from-primary via-primary to-primary/50 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
           {title}
         </span>
       </h2>

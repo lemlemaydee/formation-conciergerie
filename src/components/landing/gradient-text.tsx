@@ -5,7 +5,7 @@ export function GradientText({ children, className }: { children: ReactNode; cla
   return (
     <span
       className={cn(
-        "bg-gradient-to-r from-primary via-primary to-primary/50 bg-clip-text text-transparent",
+        "bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent",
         className,
       )}
     >

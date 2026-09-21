@@ -2,13 +2,13 @@ import Link from "next/link";
 import { ArrowRight, CalendarClock, CheckCircle2, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCurrentProfile } from "@/lib/supabase/profile";
-import { MOCK_CATEGORIES, computeProgress } from "@/lib/mock-formation";
+import { getFormationStructure, computeProgress } from "@/lib/formation-data";
 
 export default async function DashboardPage() {
-  const profile = await getCurrentProfile();
+  const [profile, categories] = await Promise.all([getCurrentProfile(), getFormationStructure()]);
   const firstName = (profile?.full_name || profile?.email || "").split(/[ @]/)[0];
-  const progress = computeProgress(MOCK_CATEGORIES);
-  const nextLesson = MOCK_CATEGORIES.flatMap((c) => c.lessons.map((l) => ({ ...l, category: c.title }))).find(
+  const progress = computeProgress(categories);
+  const nextLesson = categories.flatMap((c) => c.lessons.map((l) => ({ ...l, category: c.title }))).find(
     (l) => !l.done,
   );
 
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
-          {MOCK_CATEGORIES.map((category) => {
+          {categories.map((category) => {
             const p = computeProgress([category]);
             return (
               <div key={category.title} className="rounded-xl border border-border p-4">
