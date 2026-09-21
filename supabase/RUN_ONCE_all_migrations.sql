@@ -1,9 +1,9 @@
--- Script combiné : toutes les migrations, dans l'ordre.
--- Déjà appliqué en entier sur le projet Supabase actuel (via l'admin
--- MCP + SQL Editor) — ce fichier sert de référence / pour recréer le
--- schéma sur un nouveau projet Supabase si besoin.
+-- Fichier généré : concaténation de toutes les migrations dans l'ordre.
+-- À coller une seule fois dans Supabase SQL Editor pour un nouveau projet.
 
--- ===== 0001_profiles.sql =====
+-- ============================================================
+-- 0001_profiles.sql
+-- ============================================================
 -- Profils utilisateurs : étend auth.users avec le rôle et le palier acheté.
 -- À exécuter une fois dans Supabase Dashboard > SQL Editor.
 
@@ -70,7 +70,9 @@ create trigger on_auth_user_created
 -- Pour te donner accès admin une fois inscrit, lance :
 -- update public.profiles set role = 'admin' where email = 'ton-email@exemple.com';
 
--- ===== 0002_contact_messages.sql =====
+-- ============================================================
+-- 0002_contact_messages.sql
+-- ============================================================
 -- Messages du formulaire de contact / demande de rendez-vous.
 -- À exécuter après 0001_profiles.sql dans Supabase Dashboard > SQL Editor.
 
@@ -95,7 +97,9 @@ create policy "Admins read all contact messages"
   on public.contact_messages for select
   using (public.is_admin());
 
--- ===== 0003_profiles_role_guard.sql =====
+-- ============================================================
+-- 0003_profiles_role_guard.sql
+-- ============================================================
 -- Empêche un utilisateur de se donner lui-même le rôle admin ou de modifier
 -- son palier via une simple requête update (la policy 0001 autorisait
 -- n'importe quelle colonne). À exécuter après 0001 et 0002.
@@ -120,7 +124,9 @@ create trigger guard_profile_role
   before update on public.profiles
   for each row execute function public.prevent_self_role_change();
 
--- ===== 0004_bookings.sql =====
+-- ============================================================
+-- 0004_bookings.sql
+-- ============================================================
 -- Réservations d'appels de 30 min (10h-20h, tous les jours).
 -- À exécuter après les migrations précédentes.
 
@@ -162,7 +168,9 @@ $$;
 
 grant execute on function public.get_taken_slots(date) to anon, authenticated;
 
--- ===== 0005_formation_content.sql =====
+-- ============================================================
+-- 0005_formation_content.sql
+-- ============================================================
 -- Contenu de la formation : catégories > sous-catégories > vidéos (leçons),
 -- ebooks attachés, et suivi de progression par élève.
 -- À exécuter après 0001-0004.
@@ -274,7 +282,9 @@ join (values
   ('Choisir ses outils', 'Automatiser la messagerie voyageurs', 'Gagner du temps sur les échanges.', 1140, 1)
 ) as l(sub_title, title, description, duration_seconds, order_index) on l.sub_title = sub.title;
 
--- ===== 0006_offers.sql =====
+-- ============================================================
+-- 0006_offers.sql
+-- ============================================================
 -- Paliers tarifaires, éditables depuis l'admin (remplace les valeurs codées
 -- en dur dans le front). À exécuter après 0001-0005.
 
@@ -324,7 +334,9 @@ insert into public.addons (slug, name, price_label, description)
 values ('sous-location', 'Sous-location', '+299 €', 'Module complémentaire : stratégie et cadre légal de la sous-location.')
 on conflict (slug) do nothing;
 
--- ===== 0007_storage_buckets.sql =====
+-- ============================================================
+-- 0007_storage_buckets.sql
+-- ============================================================
 -- Buckets de stockage pour les ebooks (PDF) et, temporairement, les vidéos
 -- de leçon. À exécuter après 0001-0006.
 --
@@ -361,7 +373,9 @@ create policy "Admins write lesson videos"
   using (bucket_id = 'lesson-videos' and public.is_admin())
   with check (bucket_id = 'lesson-videos' and public.is_admin());
 
--- ===== 0008_tighten_function_grants.sql =====
+-- ============================================================
+-- 0008_tighten_function_grants.sql
+-- ============================================================
 -- handle_new_user et prevent_self_role_change ne sont que des fonctions de
 -- trigger : personne ne doit pouvoir les appeler directement en RPC.
 -- is_admin() reste exécutable par anon/authenticated : c'est nécessaire,
@@ -369,7 +383,9 @@ create policy "Admins write lesson videos"
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
 revoke execute on function public.prevent_self_role_change() from public, anon, authenticated;
 
--- ===== 0009_rls_perf_cleanup.sql =====
+-- ============================================================
+-- 0009_rls_perf_cleanup.sql
+-- ============================================================
 -- Nettoyage recommandé par les advisors Supabase (performance) : index
 -- manquants sur les FK, policies RLS qui ré-évaluaient auth.uid()/auth.role()
 -- par ligne au lieu d'une fois par requête, et policies "admin for all" qui
@@ -429,4 +445,58 @@ drop policy if exists "Users manage their own progress" on public.lesson_progres
 create policy "Users manage their own progress" on public.lesson_progress for all
   using ((select auth.uid()) = user_id or public.is_admin())
   with check ((select auth.uid()) = user_id or public.is_admin());
+
+-- ============================================================
+-- 0010_page_views.sql
+-- ============================================================
+-- Analytics visiteurs maison (pays + type d'appareil), sans dépendance
+-- externe. Alimentée par une route handler côté serveur (jamais directement
+-- par le client), qui dérive le pays de l'en-tête géo Vercel et l'appareil
+-- du user-agent : voir src/app/api/track/route.ts.
+-- Aucune IP ni donnée personnelle n'est stockée.
+
+create table if not exists public.page_views (
+  id uuid primary key default gen_random_uuid(),
+  path text not null,
+  country text,
+  device text not null default 'desktop' check (device in ('mobile', 'tablet', 'desktop')),
+  referrer text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_page_views_created_at on public.page_views(created_at);
+
+alter table public.page_views enable row level security;
+
+-- Écriture ouverte (comme tout beacon d'analytics côté client) : la table ne
+-- contient aucune donnée sensible, seulement path/pays/appareil.
+create policy "Anyone can log a page view" on public.page_views for insert with check (true);
+create policy "Admins read page views" on public.page_views for select using (public.is_admin());
+
+-- ============================================================
+-- 0011_affiliate_tools.sql
+-- ============================================================
+-- Outils recommandés / liens affiliés, proposés aux élèves dans leur espace
+-- et gérés par l'admin.
+
+create table if not exists public.affiliate_tools (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  description text,
+  url text not null,
+  logo_url text,
+  category text,
+  order_index integer not null default 0,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.affiliate_tools enable row level security;
+
+create policy "Authenticated users read active tools" on public.affiliate_tools for select
+  using ((select auth.role()) = 'authenticated' and (is_active or public.is_admin()));
+
+create policy "Admins insert tools" on public.affiliate_tools for insert with check (public.is_admin());
+create policy "Admins update tools" on public.affiliate_tools for update using (public.is_admin()) with check (public.is_admin());
+create policy "Admins delete tools" on public.affiliate_tools for delete using (public.is_admin());
 

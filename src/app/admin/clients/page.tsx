@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -46,11 +47,17 @@ export default async function AdminClientsPage() {
               </TableRow>
             ) : (
               clients.map((client) => (
-                <TableRow key={client.id}>
+                <TableRow key={client.id} className="cursor-pointer hover:bg-muted/40">
                   <TableCell className="font-medium text-foreground">
-                    {client.full_name || "—"}
+                    <Link href={`/admin/clients/${client.id}`} className="block">
+                      {client.full_name || "—"}
+                    </Link>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{client.email}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    <Link href={`/admin/clients/${client.id}`} className="block">
+                      {client.email}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     <Badge variant={client.role === "admin" ? "default" : "secondary"}>
                       {client.role === "admin" ? "Admin" : "Élève"}

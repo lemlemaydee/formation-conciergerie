@@ -1,16 +1,19 @@
-import { Users, TrendingUp, GraduationCap, Radio } from "lucide-react";
+import Link from "next/link";
+import { Users, TrendingUp, GraduationCap, CalendarClock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { StatCard } from "@/components/dashboard/stat-card";
 
 export default async function AdminOverviewPage() {
   const supabase = await createClient();
+  const todayIso = new Date().toISOString().slice(0, 10);
 
-  const [{ count: clientCount }, { data: tierRows }, { count: lessonCount }, { count: progressCount }] =
+  const [{ count: clientCount }, { data: tierRows }, { count: lessonCount }, { count: progressCount }, { count: upcomingBookings }] =
     await Promise.all([
       supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "student"),
       supabase.from("profiles").select("tier").eq("role", "student"),
       supabase.from("lessons").select("*", { count: "exact", head: true }).eq("is_published", true),
       supabase.from("lesson_progress").select("*", { count: "exact", head: true }),
+      supabase.from("bookings").select("*", { count: "exact", head: true }).gte("slot_date", todayIso),
     ]);
 
   const tierCounts = (tierRows ?? []).reduce<Record<string, number>>((acc, row) => {
@@ -42,7 +45,14 @@ export default async function AdminOverviewPage() {
           value={completionRate !== null ? `${completionRate}%` : "—"}
           hint="Donnée réelle"
         />
-        <StatCard icon={Radio} label="Prochain live" value="Jeudi 18h" hint="Exemple" />
+        <Link href="/admin/rendez-vous">
+          <StatCard
+            icon={CalendarClock}
+            label="Appels à venir"
+            value={String(upcomingBookings ?? 0)}
+            hint="Donnée réelle"
+          />
+        </Link>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">

@@ -21,7 +21,6 @@ export function BookingWidget() {
   const [state, formAction, pending] = useActionState(createBooking, initialState);
 
   useEffect(() => {
-    setSelectedSlot(null);
     startLoadingSlots(async () => {
       const available = await getSlotsForDate(selectedDay);
       setSlots(available);
@@ -48,7 +47,10 @@ export function BookingWidget() {
             <button
               key={day.iso}
               type="button"
-              onClick={() => setSelectedDay(day.iso)}
+              onClick={() => {
+                setSelectedDay(day.iso);
+                setSelectedSlot(null);
+              }}
               className={cn(
                 "shrink-0 rounded-lg border px-3 py-2 text-xs font-medium whitespace-nowrap transition-colors",
                 selectedDay === day.iso
