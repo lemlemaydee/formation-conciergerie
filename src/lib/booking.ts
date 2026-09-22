@@ -1,30 +1,29 @@
 const OPEN_HOUR = 10;
 const CLOSE_HOUR = 20;
 const SLOT_MINUTES = 30;
-const DAYS_AHEAD = 14;
+export const BOOKING_WINDOW_DAYS = 60;
 
-export interface DayOption {
-  iso: string; // YYYY-MM-DD
-  label: string; // "Lun 23 sept."
+// "Lundi 23 septembre" — à partir d'une date ISO (YYYY-MM-DD), sans dérive de
+// fuseau horaire (on construit la date en local, pas via `new Date(iso)` qui
+// l'interprète en UTC).
+export function formatDateLabel(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return capitalize(date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }));
 }
 
-export function getUpcomingDays(count = DAYS_AHEAD): DayOption[] {
-  const days: DayOption[] = [];
-  const now = new Date();
+// Grille d'un mois complet, semaines de lundi à dimanche, complétée par des
+// cases vides (null) avant/après pour toujours faire des lignes de 7.
+export function getMonthGrid(year: number, month: number): (Date | null)[] {
+  const firstOfMonth = new Date(year, month, 1);
+  const startWeekday = (firstOfMonth.getDay() + 6) % 7; // 0 = lundi
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  for (let i = 0; i < count; i++) {
-    const date = new Date(now);
-    date.setDate(now.getDate() + i);
-    const iso = toISODate(date);
-    const label = date.toLocaleDateString("fr-FR", {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    });
-    days.push({ iso, label: capitalize(label) });
-  }
-
-  return days;
+  const cells: (Date | null)[] = [];
+  for (let i = 0; i < startWeekday; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
 }
 
 export function toISODate(date: Date): string {

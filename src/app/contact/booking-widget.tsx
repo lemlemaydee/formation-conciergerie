@@ -1,20 +1,20 @@
 "use client";
 
 import { useActionState, useEffect, useState, useTransition } from "react";
-import { CheckCircle2, AlertCircle, Clock3 } from "lucide-react";
-import { getUpcomingDays } from "@/lib/booking";
+import { CheckCircle2, AlertCircle, Clock3, CalendarDays } from "lucide-react";
+import { formatDateLabel, toISODate } from "@/lib/booking";
 import { getSlotsForDate, createBooking, type BookingState } from "./booking-actions";
+import { CalendarPicker } from "./calendar-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 
-const DAYS = getUpcomingDays();
 const initialState: BookingState = { error: null, success: false };
 
 export function BookingWidget() {
-  const [selectedDay, setSelectedDay] = useState(DAYS[0].iso);
+  const [selectedDay, setSelectedDay] = useState(() => toISODate(new Date()));
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slots, setSlots] = useState<string[]>([]);
   const [loadingSlots, startLoadingSlots] = useTransition();
@@ -41,27 +41,17 @@ export function BookingWidget() {
   return (
     <div className="min-w-0 space-y-5">
       <div className="min-w-0">
-        <p className="mb-2 text-sm font-medium text-foreground">Choisissez un jour</p>
-        <div className="flex min-w-0 gap-2 overflow-x-auto pb-2">
-          {DAYS.map((day) => (
-            <button
-              key={day.iso}
-              type="button"
-              onClick={() => {
-                setSelectedDay(day.iso);
-                setSelectedSlot(null);
-              }}
-              className={cn(
-                "shrink-0 rounded-lg border px-3 py-2 text-xs font-medium whitespace-nowrap transition-colors",
-                selectedDay === day.iso
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-background text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {day.label}
-            </button>
-          ))}
-        </div>
+        <p className="mb-2 flex items-center gap-1.5 text-sm font-medium text-foreground">
+          <CalendarDays className="size-3.5" />
+          Choisissez un jour
+        </p>
+        <CalendarPicker
+          selectedIso={selectedDay}
+          onSelect={(iso) => {
+            setSelectedDay(iso);
+            setSelectedSlot(null);
+          }}
+        />
       </div>
 
       <div>
@@ -138,7 +128,7 @@ export function BookingWidget() {
           </div>
 
           <Button type="submit" size="lg" className="w-full" disabled={pending}>
-            {pending ? "Réservation…" : `Confirmer le ${DAYS.find((d) => d.iso === selectedDay)?.label} à ${selectedSlot}`}
+            {pending ? "Réservation…" : `Confirmer le ${formatDateLabel(selectedDay)} à ${selectedSlot}`}
           </Button>
         </form>
       )}

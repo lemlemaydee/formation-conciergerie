@@ -6,12 +6,15 @@ import { GradientText } from "@/components/landing/gradient-text";
 
 export function FinalCta() {
   return (
-    <section className="relative overflow-hidden border-t border-border">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 bg-gradient-to-t from-primary/20 via-gold/10 to-transparent blur-3xl"
-      />
-
+    <section
+      className="relative overflow-hidden border-t border-border"
+      style={{
+        background:
+          "radial-gradient(ellipse 480px 320px at 0% 100%, color-mix(in oklch, var(--gold) 35%, transparent), transparent 70%), " +
+          "radial-gradient(ellipse 480px 320px at 100% 100%, color-mix(in oklch, var(--primary) 35%, transparent), transparent 70%), " +
+          "radial-gradient(ellipse 60% 220px at 50% 100%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 70%)",
+      }}
+    >
       <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
         <RevealGroup className="flex flex-col items-center gap-6 text-center sm:gap-8">
           <RevealItem>
