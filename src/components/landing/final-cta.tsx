@@ -1,45 +1,50 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/landing/reveal";
+import { Badge } from "@/components/ui/badge";
+import { RevealGroup, RevealItem } from "@/components/landing/reveal";
+import { GradientText } from "@/components/landing/gradient-text";
 
 export function FinalCta() {
   return (
-    <section className="border-t border-border">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <Reveal>
-          <div className="rounded-2xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12 sm:py-20">
-            <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
-              Prêt à lancer votre{" "}
-              <span className="bg-gradient-to-r from-gold to-primary-foreground bg-clip-text text-transparent">
-                conciergerie Airbnb
-              </span>{" "}
-              ?
+    <section className="relative overflow-hidden border-t border-border">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 bg-gradient-to-t from-primary/20 via-gold/10 to-transparent blur-3xl"
+      />
+
+      <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
+        <RevealGroup className="flex flex-col items-center gap-6 text-center sm:gap-8">
+          <RevealItem>
+            <Badge variant="outline">Accès immédiat après paiement</Badge>
+          </RevealItem>
+
+          <RevealItem>
+            <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
+              Prêt à lancer votre <GradientText>conciergerie Airbnb</GradientText> ?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
+          </RevealItem>
+
+          <RevealItem>
+            <p className="max-w-xl text-lg text-pretty text-muted-foreground">
               Choisissez votre palier et accédez immédiatement à votre dashboard.
             </p>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button
-                render={<Link href="/formation" />}
-                nativeButton={false}
-                size="lg"
-                variant="secondary"
-                className="w-full sm:w-auto"
-              >
-                Voir les formules
-              </Button>
-              <Button
-                render={<Link href="/contact" />}
-                nativeButton={false}
-                size="lg"
-                variant="outline"
-                className="w-full border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
-              >
-                Réserver un appel
-              </Button>
-            </div>
-          </div>
-        </Reveal>
+          </RevealItem>
+
+          <RevealItem className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+            <Button render={<Link href="/formation" />} nativeButton={false} size="lg" className="w-full sm:w-auto">
+              Voir les formules
+            </Button>
+            <Button
+              render={<Link href="/contact" />}
+              nativeButton={false}
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              Réserver un appel
+            </Button>
+          </RevealItem>
+        </RevealGroup>
       </div>
     </section>
   );
