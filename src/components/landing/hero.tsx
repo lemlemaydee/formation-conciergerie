@@ -1,88 +1,27 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GradientText } from "@/components/landing/gradient-text";
+import { Reveal } from "@/components/landing/reveal";
+import { HeroVideo } from "@/components/landing/hero-video";
+import { createClient } from "@/lib/supabase/server";
 
-function HeroVisual() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
-      className="relative mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none"
-    >
-      <div className="absolute -inset-8 -z-10 rounded-[2.5rem] bg-gradient-to-br from-primary/20 via-gold/10 to-transparent blur-2xl" />
-
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <p className="text-sm font-semibold text-foreground">Ma progression</p>
-          <span className="text-sm font-semibold text-primary">68 %</span>
-        </div>
-        <div className="mb-6 h-2 w-full overflow-hidden rounded-full bg-muted">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: "68%" }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="h-full rounded-full bg-primary"
-          />
-        </div>
-
-        <ul className="mb-6 space-y-3">
-          {[
-            "Fondamentaux de la conciergerie",
-            "Acquisition de propriétaires",
-          ].map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-foreground">
-              <CheckCircle2 className="size-4 shrink-0 text-emerald" />
-              {item}
-            </li>
-          ))}
-          <li className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="size-4 shrink-0 rounded-full border-2 border-muted-foreground/40" />
-            Outils & automatisation
-          </li>
-        </ul>
-
-        <div className="rounded-xl bg-muted/60 p-3">
-          <p className="mb-1 text-xs font-medium text-muted-foreground">
-            Prochain live
-          </p>
-          <p className="text-sm font-semibold text-foreground">
-            Q&amp;A acquisition clients — Jeudi 18h
-          </p>
-        </div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.9 }}
-        className="absolute -bottom-5 -left-5 flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg sm:-left-8"
-      >
-        <div className="flex text-gold">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="size-3.5 fill-current" />
-          ))}
-        </div>
-        <span className="text-xs font-medium text-foreground">Villas & UHNW</span>
-      </motion.div>
-    </motion.div>
-  );
+async function getHeroVideo() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("site_settings")
+    .select("hero_video_url, hero_video_poster_url")
+    .limit(1)
+    .single();
+  return { videoUrl: data?.hero_video_url ?? null, posterUrl: data?.hero_video_poster_url ?? null };
 }
 
-export function Hero() {
+export async function Hero() {
+  const { videoUrl, posterUrl } = await getHeroVideo();
+
   return (
     <section className="overflow-hidden">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-2 lg:gap-8 lg:py-32 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center lg:text-left"
-        >
+        <Reveal className="text-center lg:text-left">
           <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
             Formation conciergerie Airbnb
           </span>
@@ -112,9 +51,11 @@ export function Hero() {
               Voir le programme
             </Button>
           </div>
-        </motion.div>
+        </Reveal>
 
-        <HeroVisual />
+        <Reveal delay={0.15}>
+          <HeroVideo videoUrl={videoUrl} posterUrl={posterUrl} />
+        </Reveal>
       </div>
     </section>
   );
