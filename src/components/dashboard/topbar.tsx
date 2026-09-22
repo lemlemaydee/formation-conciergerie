@@ -2,19 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, LogOut, User as UserIcon } from "lucide-react";
-import { logout } from "@/app/auth/actions";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -24,6 +13,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS } from "@/components/dashboard/nav-items";
+import { ProfileMenu } from "@/components/dashboard/nav-sidebar";
 
 export function Topbar({
   variant,
@@ -38,21 +28,25 @@ export function Topbar({
 }) {
   const [open, setOpen] = useState(false);
   const items = variant === "admin" ? ADMIN_NAV_ITEMS : DASHBOARD_NAV_ITEMS;
-  const initials = userLabel.slice(0, 2).toUpperCase() || "CC";
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 sm:px-6">
+    <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-4 sm:px-6 md:hidden">
+      <Link href="/" className="flex items-center gap-2">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+          FC
+        </span>
+        <span className="text-sm font-semibold text-foreground">{brandLabel}</span>
+      </Link>
+
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger
-          render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="Ouvrir le menu" />}
-        >
+        <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Ouvrir le menu" />}>
           <Menu className="size-5" />
         </SheetTrigger>
-        <SheetContent side="left" className="w-72">
+        <SheetContent side="left" className="flex w-72 flex-col">
           <SheetHeader>
             <SheetTitle>{brandLabel}</SheetTitle>
           </SheetHeader>
-          <nav className="flex flex-col gap-1 px-4">
+          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4">
             {items.map((item) => (
               <SheetClose
                 key={item.href}
@@ -69,42 +63,11 @@ export function Topbar({
               </SheetClose>
             ))}
           </nav>
+          <div className="shrink-0 border-t border-border p-3">
+            <ProfileMenu userLabel={userLabel} userEmail={userEmail} side="top" />
+          </div>
         </SheetContent>
       </Sheet>
-
-      <div className="hidden text-sm font-medium text-muted-foreground md:block">{userLabel}</div>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="ghost" className="gap-2 px-2" />}>
-          <Avatar className="size-7">
-            <AvatarFallback className="bg-primary/10 text-xs text-primary">{initials}</AvatarFallback>
-          </Avatar>
-          <span className="hidden text-sm font-medium sm:inline">{userLabel}</span>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuGroup>
-            <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
-              {userEmail}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem render={<Link href="/dashboard/mon-compte" />}>
-              <UserIcon className="size-4" />
-              Mon compte
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <form action={logout}>
-              <DropdownMenuItem
-                render={<button type="submit" className="w-full" />}
-                nativeButton={true}
-                variant="destructive"
-              >
-                <LogOut className="size-4" />
-                Se déconnecter
-              </DropdownMenuItem>
-            </form>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </header>
   );
 }

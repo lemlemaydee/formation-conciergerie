@@ -48,12 +48,12 @@ export function TitleEditDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {cloneElement(trigger, { onClick: () => setOpen(true) } as React.HTMLAttributes<HTMLElement>)}
-      <DialogContent>
+      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
-        <form action={formAction} className="flex flex-col gap-3">
+        <form action={formAction} className="flex flex-col gap-4">
           <div className="grid gap-1.5">
             <Label htmlFor="title">Titre</Label>
             <Input id="title" name="title" defaultValue={defaultTitle} required autoFocus />
@@ -61,7 +61,7 @@ export function TitleEditDialog({
           {withDescription && (
             <div className="grid gap-1.5">
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" name="description" defaultValue={defaultDescription} rows={2} />
+              <Textarea id="description" name="description" defaultValue={defaultDescription} rows={3} />
             </div>
           )}
           {state.error && <p className="text-sm text-destructive">{state.error}</p>}

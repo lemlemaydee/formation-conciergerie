@@ -46,12 +46,12 @@ export function ToolDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {cloneElement(trigger, { onClick: () => setOpen(true) } as React.HTMLAttributes<HTMLElement>)}
-      <DialogContent>
+      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>Outil proposé aux élèves, avec ton lien affilié.</DialogDescription>
         </DialogHeader>
-        <form action={formAction} className="flex flex-col gap-3">
+        <form action={formAction} className="flex flex-col gap-4">
           <div className="grid gap-1.5">
             <Label htmlFor="name">Nom</Label>
             <Input id="name" name="name" defaultValue={defaults?.name} required autoFocus />

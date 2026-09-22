@@ -3,13 +3,12 @@
 import { useActionState, useState, cloneElement, type ReactElement } from "react";
 import { Loader2, Upload, Video as VideoIcon, Image as ImageIcon } from "lucide-react";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -92,78 +91,78 @@ export function TestimonialEditor({
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       {cloneElement(trigger, { onClick: () => setOpen(true) } as React.HTMLAttributes<HTMLElement>)}
-      <SheetContent className="overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>{isEdit ? "Modifier le témoignage" : "Nouveau témoignage vidéo"}</SheetTitle>
-          <SheetDescription>Vidéo verticale (9:16), affichée dans le carrousel de la landing page.</SheetDescription>
-        </SheetHeader>
+      <DialogContent className="max-h-[88vh] w-full max-w-[calc(100%-2rem)] overflow-y-auto sm:max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>{isEdit ? "Modifier le témoignage" : "Nouveau témoignage vidéo"}</DialogTitle>
+          <DialogDescription>Vidéo verticale (9:16), affichée dans le carrousel de la landing page.</DialogDescription>
+        </DialogHeader>
 
-        <form action={formAction} className="flex flex-col gap-4 px-4">
-          <div className="grid gap-1.5">
-            <Label htmlFor="name">Nom</Label>
-            <Input id="name" name="name" defaultValue={testimonial?.name} required />
-          </div>
-          <div className="grid gap-1.5">
-            <Label htmlFor="role">Sous-titre</Label>
-            <Input id="role" name="role" placeholder="Ex: 12 biens en gestion" defaultValue={testimonial?.role ?? ""} />
-          </div>
-          {state.error && <p className="text-sm text-destructive">{state.error}</p>}
-          <Button type="submit" disabled={pending} nativeButton={true}>
-            {pending && <Loader2 className="size-4 animate-spin" />}
-            {isEdit ? "Enregistrer" : "Créer"}
-          </Button>
-        </form>
-
-        {isEdit && (
-          <div className="mt-2 space-y-4 border-t border-border px-4 pt-4">
-            <div>
-              <p className="mb-2 text-sm font-semibold text-foreground">Vidéo (9:16)</p>
-              <div className="space-y-2">
-                {videoUrl && (
-                  <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-                    <VideoIcon className="size-4 shrink-0 text-primary" />
-                    <span className="truncate">Vidéo en ligne</span>
-                    <a href={videoUrl} target="_blank" rel="noreferrer" className="ml-auto text-primary underline-offset-2 hover:underline">
-                      Voir
-                    </a>
-                  </div>
-                )}
-                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border px-3 py-3 text-xs text-muted-foreground hover:bg-muted/30">
-                  {uploadingVideo ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
-                  {uploadingVideo ? "Upload en cours…" : videoUrl ? "Remplacer la vidéo" : "Uploader une vidéo (MP4)"}
-                  <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload} disabled={uploadingVideo} />
-                </label>
-              </div>
+        <div className={isEdit ? "grid gap-6 md:grid-cols-2" : ""}>
+          <form action={formAction} className="flex flex-col gap-4">
+            <div className="grid gap-1.5">
+              <Label htmlFor="name">Nom</Label>
+              <Input id="name" name="name" defaultValue={testimonial?.name} required />
             </div>
-
-            <div>
-              <p className="mb-2 text-sm font-semibold text-foreground">Image de couverture (optionnel)</p>
-              <div className="space-y-2">
-                {posterUrl && (
-                  <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-                    <ImageIcon className="size-4 shrink-0 text-primary" />
-                    <span className="truncate">Image en ligne</span>
-                    <a href={posterUrl} target="_blank" rel="noreferrer" className="ml-auto text-primary underline-offset-2 hover:underline">
-                      Voir
-                    </a>
-                  </div>
-                )}
-                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border px-3 py-3 text-xs text-muted-foreground hover:bg-muted/30">
-                  {uploadingPoster ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
-                  {uploadingPoster ? "Upload en cours…" : posterUrl ? "Remplacer l'image" : "Uploader une image"}
-                  <input type="file" accept="image/*" className="hidden" onChange={handlePosterUpload} disabled={uploadingPoster} />
-                </label>
-              </div>
+            <div className="grid gap-1.5">
+              <Label htmlFor="role">Sous-titre</Label>
+              <Input id="role" name="role" placeholder="Ex: 12 biens en gestion" defaultValue={testimonial?.role ?? ""} />
             </div>
-            {uploadError && <p className="text-xs text-destructive">{uploadError}</p>}
-            {!videoUrl && <p className="text-xs text-muted-foreground">Ajoute une vidéo pour pouvoir activer ce témoignage.</p>}
-          </div>
-        )}
+            {state.error && <p className="text-sm text-destructive">{state.error}</p>}
+            <Button type="submit" disabled={pending} nativeButton={true} className="mt-auto">
+              {pending && <Loader2 className="size-4 animate-spin" />}
+              {isEdit ? "Enregistrer" : "Créer"}
+            </Button>
+          </form>
 
-        <SheetFooter />
-      </SheetContent>
-    </Sheet>
+          {isEdit && (
+            <div className="space-y-5 rounded-xl bg-muted/30 p-4 md:border-l md:border-border md:bg-transparent md:pl-6">
+              <div>
+                <p className="mb-2 text-sm font-semibold text-foreground">Vidéo (9:16)</p>
+                <div className="space-y-2">
+                  {videoUrl && (
+                    <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
+                      <VideoIcon className="size-4 shrink-0 text-primary" />
+                      <span className="truncate">Vidéo en ligne</span>
+                      <a href={videoUrl} target="_blank" rel="noreferrer" className="ml-auto text-primary underline-offset-2 hover:underline">
+                        Voir
+                      </a>
+                    </div>
+                  )}
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card px-3 py-3 text-xs text-muted-foreground hover:bg-muted/50">
+                    {uploadingVideo ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+                    {uploadingVideo ? "Upload en cours…" : videoUrl ? "Remplacer la vidéo" : "Uploader une vidéo (MP4)"}
+                    <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload} disabled={uploadingVideo} />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 text-sm font-semibold text-foreground">Image de couverture (optionnel)</p>
+                <div className="space-y-2">
+                  {posterUrl && (
+                    <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
+                      <ImageIcon className="size-4 shrink-0 text-primary" />
+                      <span className="truncate">Image en ligne</span>
+                      <a href={posterUrl} target="_blank" rel="noreferrer" className="ml-auto text-primary underline-offset-2 hover:underline">
+                        Voir
+                      </a>
+                    </div>
+                  )}
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card px-3 py-3 text-xs text-muted-foreground hover:bg-muted/50">
+                    {uploadingPoster ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+                    {uploadingPoster ? "Upload en cours…" : posterUrl ? "Remplacer l'image" : "Uploader une image"}
+                    <input type="file" accept="image/*" className="hidden" onChange={handlePosterUpload} disabled={uploadingPoster} />
+                  </label>
+                </div>
+              </div>
+              {uploadError && <p className="text-xs text-destructive">{uploadError}</p>}
+              {!videoUrl && <p className="text-xs text-muted-foreground">Ajoute une vidéo pour pouvoir activer ce témoignage.</p>}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
