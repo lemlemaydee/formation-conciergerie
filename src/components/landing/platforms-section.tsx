@@ -12,7 +12,7 @@ const LOGOS = [
 
 export function PlatformsSection() {
   return (
-    <section className="border-t border-border bg-muted/20">
+    <section className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <Reveal>
           <MarqueeLogoScroller

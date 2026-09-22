@@ -69,6 +69,7 @@ export function FaqSection() {
         id="faq"
         subtitle="Une question ?"
         title="Questions fréquentes"
+        className="border-t border-border"
         categories={categories}
         faqData={faqData}
         footer={

@@ -10,9 +10,9 @@ export function FinalCta() {
       className="relative overflow-hidden border-t border-border"
       style={{
         background:
-          "radial-gradient(ellipse 480px 320px at 0% 100%, color-mix(in oklch, var(--gold) 35%, transparent), transparent 70%), " +
-          "radial-gradient(ellipse 480px 320px at 100% 100%, color-mix(in oklch, var(--primary) 35%, transparent), transparent 70%), " +
-          "radial-gradient(ellipse 60% 220px at 50% 100%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 70%)",
+          "radial-gradient(ellipse 420px 220px at 8% 65%, color-mix(in oklch, var(--gold) 28%, transparent), transparent 65%), " +
+          "radial-gradient(ellipse 420px 220px at 92% 65%, color-mix(in oklch, var(--primary) 28%, transparent), transparent 65%), " +
+          "linear-gradient(to bottom, transparent, transparent 80%, var(--muted) 130%)",
       }}
     >
       <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
