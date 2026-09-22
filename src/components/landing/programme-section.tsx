@@ -1,13 +1,6 @@
 import Link from "next/link";
-import {
-  BookOpen,
-  Users2,
-  SprayCan,
-  Workflow,
-  TrendingUp,
-  KeyRound,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Compass, Scale, Wrench, Target, Camera, Workflow, TrendingUp } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 import {
   Accordion,
   AccordionContent,
@@ -17,95 +10,64 @@ import {
 import { Reveal } from "@/components/landing/reveal";
 import { GradientText } from "@/components/landing/gradient-text";
 
-const ACCENT_STYLES = {
-  primary: "bg-primary/10 text-primary",
-  gold: "bg-gold/15 text-gold",
-  emerald: "bg-emerald/10 text-emerald",
-};
+const ICONS = [Compass, Scale, Wrench, Target, Camera, Workflow, TrendingUp];
+const ACCENTS = [
+  { bg: "bg-primary/10 text-primary", dot: "bg-primary" },
+  { bg: "bg-gold/15 text-gold", dot: "bg-gold" },
+  { bg: "bg-emerald/10 text-emerald", dot: "bg-emerald" },
+];
 
-const DOT_STYLES = {
-  primary: "bg-primary",
-  gold: "bg-gold",
-  emerald: "bg-emerald",
-};
+interface ProgrammeModule {
+  title: string;
+  lessons: string[];
+}
 
-const MODULES = [
+interface ProgrammeCategory {
+  title: string;
+  modules: ProgrammeModule[];
+}
+
+// Filet de sécurité si la requête échoue : la vraie source est la table
+// `categories` (gérée depuis /admin/contenus), pas ce tableau.
+const FALLBACK: ProgrammeCategory[] = [
   {
-    icon: BookOpen,
-    title: "Fondamentaux",
-    description: "Poser des bases solides avant de prendre votre premier bien.",
-    accent: "primary" as const,
-    lessons: [
-      "Choisir son statut juridique et se lancer sereinement",
-      "Structurer une offre de conciergerie claire et crédible",
-      "Comprendre les bases de la fiscalité de la location courte durée",
-      "Poser les fondations d'une activité qui dure",
-    ],
-  },
-  {
-    icon: Users2,
-    title: "Acquisition de propriétaires",
-    description: "Trouver et convaincre vos premiers propriétaires, du studio à la villa.",
-    accent: "gold" as const,
-    lessons: [
-      "Identifier et démarcher ses premiers propriétaires",
-      "Le script de démarchage qui fonctionne vraiment",
-      "Convaincre sur le prix sans brader son offre",
-      "Construire une réputation qui génère du bouche-à-oreille",
-    ],
-  },
-  {
-    icon: SprayCan,
-    title: "Opérations & ménage",
-    description: "Organiser le quotidien sans y passer vos journées.",
-    accent: "emerald" as const,
-    lessons: [
-      "Organiser le ménage et la blanchisserie",
-      "Check-in / check-out fluide pour les voyageurs",
-      "Gérer la maintenance et les imprévus",
-      "Mettre en place des standards de qualité reproductibles",
-    ],
-  },
-  {
-    icon: Workflow,
-    title: "Outils & automatisation",
-    description: "Les outils qu'on utilise vraiment, au quotidien.",
-    accent: "primary" as const,
-    lessons: [
-      "Choisir son channel manager (Airbnb, Booking, Abritel)",
-      "Automatiser la messagerie voyageurs",
-      "Mettre en place la tarification dynamique",
-      "Centraliser son reporting propriétaire",
-    ],
-  },
-  {
-    icon: TrendingUp,
-    title: "Scaling & équipe",
-    description: "Passer de quelques biens à une vraie structure.",
-    accent: "gold" as const,
-    lessons: [
-      "Passer de quelques biens à une vraie structure",
-      "Recruter et déléguer sans perdre en qualité",
-      "Structurer ses process pour scaler sereinement",
-      "Piloter son activité avec les bons indicateurs",
-    ],
-  },
-  {
-    icon: KeyRound,
-    title: "Sous-location",
-    description: "Module complémentaire, disponible en option.",
-    accent: "emerald" as const,
-    optional: true,
-    lessons: [
-      "Comprendre le cadre légal de la sous-location",
-      "Construire une stratégie de sous-location rentable",
-      "Éviter les pièges juridiques et les risques",
-      "Gérer la relation avec le propriétaire principal",
+    title: "Fondamentaux & stratégie",
+    modules: [
+      {
+        title: "Bienvenue & plan de bataille",
+        lessons: ["Les 4 business models", "Le plan 30/60/90 jours de l'élève"],
+      },
     ],
   },
 ];
 
-export function ProgrammeSection() {
+async function getProgramme(): Promise<ProgrammeCategory[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("categories")
+    .select(
+      "title, order_index, subcategories(title, order_index, lessons(title, order_index))",
+    )
+    .order("order_index");
+
+  if (error || !data || data.length === 0) return FALLBACK;
+
+  return data.map((category) => ({
+    title: category.title,
+    modules: [...(category.subcategories ?? [])]
+      .sort((a, b) => a.order_index - b.order_index)
+      .map((sub) => ({
+        title: sub.title,
+        lessons: [...(sub.lessons ?? [])]
+          .sort((a, b) => a.order_index - b.order_index)
+          .map((l) => l.title),
+      })),
+  }));
+}
+
+export async function ProgrammeSection() {
+  const categories = await getProgramme();
+
   return (
     <section id="programme" className="scroll-mt-20 border-t border-border bg-muted/30">
       <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -114,55 +76,58 @@ export function ProgrammeSection() {
             <GradientText>Le programme</GradientText>, en détail
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Une méthode structurée par étapes, directement issue de notre propre activité de
-            conciergerie. Ouvrez chaque module pour voir exactement ce que vous allez apprendre.
+            24 modules, directement issus de notre propre activité de conciergerie. Ouvrez chaque
+            thème pour voir exactement ce que vous allez apprendre.
           </p>
         </Reveal>
 
         <Reveal delay={0.1}>
           <Accordion className="mt-12 w-full space-y-3">
-            {MODULES.map((module) => (
-              <AccordionItem
-                key={module.title}
-                value={module.title}
-                className="rounded-2xl border border-border bg-card px-5 shadow-sm not-last:border-b"
-              >
-                <AccordionTrigger className="py-5 hover:no-underline">
-                  <div className="flex flex-1 items-center gap-4 text-left">
-                    <div
-                      className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${ACCENT_STYLES[module.accent]}`}
-                    >
-                      <module.icon className="size-5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-base font-semibold text-foreground">
-                          {module.title}
-                        </span>
-                        {module.optional && (
-                          <Badge variant="secondary" className="text-xs">
-                            +299&nbsp;€ en option
-                          </Badge>
-                        )}
+            {categories.map((category, i) => {
+              const Icon = ICONS[i % ICONS.length];
+              const accent = ACCENTS[i % ACCENTS.length];
+              const lessonCount = category.modules.reduce((sum, m) => sum + m.lessons.length, 0);
+
+              return (
+                <AccordionItem
+                  key={category.title}
+                  value={category.title}
+                  className="rounded-2xl border border-border bg-card px-5 shadow-sm not-last:border-b"
+                >
+                  <AccordionTrigger className="py-5 hover:no-underline">
+                    <div className="flex flex-1 items-center gap-4 text-left">
+                      <div className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${accent.bg}`}>
+                        <Icon className="size-5" />
                       </div>
-                      <p className="mt-0.5 text-sm text-muted-foreground">{module.description}</p>
+                      <div>
+                        <span className="text-base font-semibold text-foreground">{category.title}</span>
+                        <p className="mt-0.5 text-sm text-muted-foreground">
+                          {category.modules.length} module{category.modules.length > 1 ? "s" : ""} ·{" "}
+                          {lessonCount} leçons
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="ml-14 space-y-2.5 pb-2">
-                    {module.lessons.map((lesson) => (
-                      <li key={lesson} className="flex items-start gap-2.5 text-sm text-foreground">
-                        <span
-                          className={`mt-1.5 size-1.5 shrink-0 rounded-full ${DOT_STYLES[module.accent]}`}
-                        />
-                        {lesson}
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="ml-14 space-y-5 pb-2">
+                      {category.modules.map((module) => (
+                        <div key={module.title}>
+                          <p className="text-sm font-semibold text-foreground">{module.title}</p>
+                          <ul className="mt-2 space-y-2">
+                            {module.lessons.map((lesson) => (
+                              <li key={lesson} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                                <span className={`mt-1.5 size-1.5 shrink-0 rounded-full ${accent.dot}`} />
+                                {lesson}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </Reveal>
 

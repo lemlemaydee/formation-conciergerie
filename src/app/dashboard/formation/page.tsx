@@ -33,11 +33,17 @@ export default async function FormationLibraryPage() {
                     {p.done}/{p.total} · {p.percent}%
                   </span>
                 </div>
-                <ul className="divide-y divide-border">
-                  {category.lessons.map((lesson) => (
-                    <LessonRow key={lesson.id} lesson={lesson} />
-                  ))}
-                </ul>
+                {category.lessons.length === 0 ? (
+                  <p className="px-5 py-6 text-center text-sm text-muted-foreground">
+                    Bientôt disponible.
+                  </p>
+                ) : (
+                  <ul className="divide-y divide-border">
+                    {category.lessons.map((lesson) => (
+                      <LessonRow key={lesson.id} lesson={lesson} />
+                    ))}
+                  </ul>
+                )}
               </div>
             );
           })}
