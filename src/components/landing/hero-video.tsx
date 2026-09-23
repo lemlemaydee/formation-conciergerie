@@ -8,7 +8,7 @@ export function HeroVideo({ videoUrl, posterUrl }: { videoUrl: string | null; po
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none">
+    <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
       <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-primary/15 via-gold/10 to-transparent blur-2xl" />
 
       <div className="group relative aspect-video overflow-hidden rounded-2xl border border-border bg-muted shadow-xl">

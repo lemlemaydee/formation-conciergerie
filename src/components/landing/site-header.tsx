@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
@@ -55,6 +56,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle />
           <Link
             href="/connexion"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -66,64 +68,66 @@ export function SiteHeader() {
           </Button>
         </div>
 
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger
-            render={
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden"
-                aria-label="Ouvrir le menu"
-              />
-            }
-          >
-            <Menu className="size-5" />
-          </SheetTrigger>
-          <SheetContent side="right" className="w-72">
-            <SheetHeader>
-              <SheetTitle>
-                <Logo />
-              </SheetTitle>
-            </SheetHeader>
-            <nav className="flex flex-col gap-1 px-4">
-              {NAV_LINKS.map((link) => (
+        <div className="flex items-center gap-1 lg:hidden">
+          <ThemeToggle />
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Ouvrir le menu"
+                />
+              }
+            >
+              <Menu className="size-5" />
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72">
+              <SheetHeader>
+                <SheetTitle>
+                  <Logo />
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-1 px-4">
+                {NAV_LINKS.map((link) => (
+                  <SheetClose
+                    key={link.href}
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href={link.href}
+                        className="rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-accent"
+                      />
+                    }
+                  >
+                    {link.label}
+                  </SheetClose>
+                ))}
                 <SheetClose
-                  key={link.href}
                   nativeButton={false}
                   render={
                     <Link
-                      href={link.href}
+                      href="/connexion"
                       className="rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-accent"
                     />
                   }
                 >
-                  {link.label}
+                  Connexion
                 </SheetClose>
-              ))}
-              <SheetClose
-                nativeButton={false}
-                render={
-                  <Link
-                    href="/connexion"
-                    className="rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-accent"
-                  />
-                }
-              >
-                Connexion
-              </SheetClose>
-            </nav>
-            <div className="mt-2 px-4">
-              <SheetClose
-                nativeButton={false}
-                render={
-                  <Link href="/formation" className={cn(buttonVariants(), "w-full")} />
-                }
-              >
-                Rejoindre la formation
-              </SheetClose>
-            </div>
-          </SheetContent>
-        </Sheet>
+              </nav>
+              <div className="mt-2 px-4">
+                <SheetClose
+                  nativeButton={false}
+                  render={
+                    <Link href="/formation" className={cn(buttonVariants(), "w-full")} />
+                  }
+                >
+                  Rejoindre la formation
+                </SheetClose>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

@@ -20,7 +20,7 @@ export async function Hero() {
 
   return (
     <section className="overflow-hidden">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-2 lg:gap-8 lg:py-32 lg:px-8">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.2fr] lg:gap-10 lg:py-32 lg:px-8">
         <Reveal className="text-center lg:text-left">
           <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
             Formation conciergerie Airbnb
