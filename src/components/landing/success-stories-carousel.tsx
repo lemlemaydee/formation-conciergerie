@@ -91,7 +91,7 @@ export function SuccessStoriesCarousel() {
   const isActive = (index: number) => index === active;
 
   return (
-    <div className="mx-auto grid max-w-4xl gap-y-12 md:grid-cols-2 md:items-center md:gap-x-16">
+    <div className="mx-auto grid grid-cols-1 max-w-4xl gap-y-12 md:grid-cols-2 md:items-center md:gap-x-16">
       <div className="flex items-center justify-center">
         <div className="relative h-72 w-full max-w-xs sm:h-80">
           <AnimatePresence>

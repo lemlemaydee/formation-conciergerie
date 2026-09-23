@@ -1,4 +1,5 @@
-import { Radar, Users, GraduationCap, Building2, Workflow, Lightbulb, ClipboardList, Search } from "lucide-react";
+import Link from "next/link";
+import { Radar, Users, GraduationCap, Building2, Workflow, Lightbulb, ClipboardList, Search, ArrowRight } from "lucide-react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
@@ -352,7 +353,25 @@ export default function AdminVeillePage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Link
+        href="/admin/veille/idees"
+        className="group flex items-center justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      >
+        <div className="flex items-center gap-4">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Lightbulb className="size-5" />
+          </span>
+          <div>
+            <p className="font-semibold text-foreground">Banque d&apos;idées vidéos</p>
+            <p className="text-sm text-muted-foreground">
+              Hooks, sujets et pain points repérés ci-dessous, prêts à devenir des scripts.
+            </p>
+          </div>
+        </div>
+        <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Users} label="Comptes analysés" value="25" hint="Stats vérifiées sur profil" />
         <StatCard icon={Building2} label="Plus gros compte conciergerie" value="103,4K" hint="@blsd.immo (service réel)" />
         <StatCard icon={GraduationCap} label="Plus gros compte formateur" value="730K" hint="@sabelfamilly (généraliste)" />
@@ -396,7 +415,7 @@ export default function AdminVeillePage() {
           Aucun des cinq n&apos;affiche son prix publiquement : on le découvre après la vidéo gratuite ou lors de
           l&apos;appel.
         </p>
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {FUNNELS.map((f) => (
             <div key={f.handle} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="flex items-start justify-between gap-3">
@@ -428,7 +447,7 @@ export default function AdminVeillePage() {
         </h2>
         <div className="divide-y divide-border rounded-2xl border border-border bg-card shadow-sm">
           {RECOMMANDATIONS.map((r) => (
-            <div key={r.titre} className="grid gap-1 p-5 sm:grid-cols-[220px_1fr] sm:gap-5">
+            <div key={r.titre} className="grid grid-cols-1 gap-1 p-5 sm:grid-cols-[220px_1fr] sm:gap-5">
               <h3 className="font-semibold text-foreground">{r.titre}</h3>
               <p className="text-sm text-muted-foreground">{r.texte}</p>
             </div>
