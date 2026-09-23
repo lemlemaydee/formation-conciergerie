@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
@@ -123,7 +123,18 @@ export async function PricingPreview() {
           })}
         </RevealGroup>
 
-        <p className="mt-8 text-center text-sm text-muted-foreground">
+        {/* [À VALIDER] Durée et conditions à confirmer avec Mehdi/Jacques avant mise en ligne (impact CGV/remboursement). */}
+        <Reveal className="mx-auto mt-10 flex max-w-md flex-col items-center gap-1.5 rounded-2xl border border-emerald/20 bg-emerald/5 px-6 py-4 text-center">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald">
+            <ShieldCheck className="size-4" />
+            Garantie 14 jours, satisfait ou remboursé
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Si la formation ne vous convient pas, écrivez-nous dans les 14 jours suivant votre achat.
+          </p>
+        </Reveal>
+
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           Module complémentaire &laquo;&nbsp;Sous-location&nbsp;&raquo; disponible en option (+299&nbsp;€) ·{" "}
           <Link href="/formation" className="font-medium text-primary underline-offset-4 hover:underline">
             Voir le détail complet

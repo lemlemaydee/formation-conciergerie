@@ -7,6 +7,7 @@ import { TeamSection } from "@/components/landing/team-section";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { VideoTestimonialsSection } from "@/components/landing/video-testimonials-section";
+import { SuccessStoriesSection } from "@/components/landing/success-stories-section";
 import { CommunityPreview } from "@/components/landing/community-preview";
 import { PricingPreview } from "@/components/landing/pricing-preview";
 import { FaqSection } from "@/components/landing/faq-section";
@@ -26,6 +27,7 @@ export default function Home() {
         <HowItWorks />
         <TestimonialsSection />
         <VideoTestimonialsSection />
+        <SuccessStoriesSection />
         <CommunityPreview />
         <PricingPreview />
         <FaqSection />
