@@ -54,7 +54,7 @@ export function MasterclassVideoSettings({
 
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <p className="text-sm font-semibold text-foreground">Vidéo de la masterclass</p>
+      <p className="text-sm font-semibold text-foreground">Vidéo de la formation gratuite</p>
       <p className="mt-1 text-sm text-muted-foreground">
         La vidéo de présentation (Mehdi &amp; Jacques) qui s&apos;affiche sur{" "}
         <a href="/masterclass" target="_blank" rel="noreferrer" className="font-medium text-primary underline-offset-2 hover:underline">

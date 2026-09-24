@@ -1,16 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Compass,
-  Scale,
-  Wrench,
-  Target,
-  Camera,
-  Workflow,
-  TrendingUp,
-  MapPin,
-  Users,
-  BookOpen,
-} from "lucide-react";
+import { Sprout, TrendingUp, Gem } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   Accordion,
@@ -22,47 +12,63 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/landing/reveal";
 import { GradientText } from "@/components/landing/gradient-text";
+import { ClientAvatars } from "@/components/landing/client-avatars";
 import { MasterclassGate } from "@/app/masterclass/masterclass-gate";
+import { RoadmapTimeline } from "@/app/masterclass/roadmap-timeline";
 
-const ICONS = [Compass, Scale, Wrench, Target, Camera, Workflow, TrendingUp];
-
-// Une phrase d'accroche par catégorie relle du programme, dans l'ordre —
-// pas le détail leçon par leçon, juste de quoi donner envie.
-const CATEGORY_TEASERS: Record<string, string> = {
-  "Fondamentaux & stratégie": "Comprendre les modèles de conciergerie qui existent et choisir le vôtre.",
-  "Juridique, réglementation & fiscalité": "Sécuriser votre activité : statut, contrats, fiscalité, réglementation locale.",
-  "Mise en place & structure commerciale": "Structurer votre offre et vos tarifs avant de démarcher qui que ce soit.",
-  "Acquisition & vente": "Trouver et signer vos premiers propriétaires, étape par étape.",
-  "Préparation & mise en ligne du bien": "Préparer, photographier et publier une annonce qui convertit.",
-  "Opérations quotidiennes": "Gérer le ménage, les voyageurs et les imprévus sans y laisser vos journées.",
-  "Piloter, développer & scaler": "Passer de votre premier bien à une conciergerie qui tourne sans vous.",
+export const metadata: Metadata = {
+  title: "Formation gratuite — Formation Conciergerie",
+  description: "Comment signer votre premier propriétaire et lancer votre conciergerie Airbnb, du studio à la villa de luxe.",
 };
+
+const POUR_QUI = [
+  {
+    icon: Sprout,
+    title: "Vous démarrez de zéro",
+    text: "Aucune expérience en immobilier n'est nécessaire — la méthode vous fait poser vos premières actions concrètes dès la fin de la vidéo.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Vous gérez déjà quelques biens",
+    text: "Vous jonglez avec plusieurs annonces sans process clair ? Structurez votre activité pour arrêter de tout gérer dans l'urgence.",
+  },
+  {
+    icon: Gem,
+    title: "Vous visez le haut de gamme",
+    text: "Découvrez comment on opère nous-mêmes des biens d'exception, pour une clientèle exigeante, entre Monaco et la Côte d'Azur.",
+  },
+];
 
 const FAQ = [
   {
-    q: "La masterclass est-elle vraiment gratuite ?",
+    q: "La formation est-elle vraiment gratuite ?",
     a: "Oui, entièrement gratuite et sans engagement — on vous demande juste un prénom et un email pour vous donner l'accès.",
   },
   {
     q: "Faut-il déjà avoir de l'expérience en immobilier ?",
-    a: "Non. Cette masterclass est pensée aussi bien pour un débutant complet que pour quelqu'un qui gère déjà quelques biens et veut structurer son activité.",
+    a: "Non. Cette formation est pensée aussi bien pour un débutant complet que pour quelqu'un qui gère déjà quelques biens et veut structurer son activité.",
   },
   {
     q: "Je vais devoir acheter quelque chose après ?",
-    a: "Non, aucune obligation. Si la méthode vous parle, vous pourrez ensuite découvrir nos formules — mais la masterclass se suffit à elle-même.",
+    a: "Non, aucune obligation. Si la méthode vous parle, vous pourrez ensuite découvrir nos formules — mais la vidéo se suffit à elle-même.",
   },
   {
-    q: "Qui présente la masterclass ?",
+    q: "Qui la présente ?",
     a: "Mehdi et Jacques, les deux fondateurs de Formation Conciergerie — ils gèrent eux-mêmes plus de 120 biens entre Monaco et la Côte d'Azur.",
   },
+  {
+    q: "Combien de temps faut-il pour voir des résultats ?",
+    a: "Ça dépend surtout de votre implication et de votre marché — la vidéo vous montre la méthode, pas un raccourci magique. Certains signent leur premier propriétaire en quelques semaines en y consacrant du temps chaque jour.",
+  },
+  {
+    q: "Le marché n'est-il pas déjà saturé ?",
+    a: "Il y a plus de propriétaires qui cherchent un gestionnaire sérieux que de conciergeries capables de bien les servir — surtout sur le haut de gamme, où l'exigence est plus forte et la concurrence plus rare.",
+  },
+  {
+    q: "Puis-je le faire en parallèle de mon emploi actuel ?",
+    a: "Oui, c'est justement pensé pour ça : vous avancez à votre rythme, en parallèle de votre activité actuelle, jusqu'à votre premier bien géré.",
+  },
 ];
-
-async function getCategoryTitles(): Promise<string[]> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("categories").select("title, order_index").order("order_index");
-  if (!data || data.length === 0) return Object.keys(CATEGORY_TEASERS);
-  return data.map((c) => c.title);
-}
 
 async function getMasterclassVideo() {
   const supabase = await createClient();
@@ -75,7 +81,7 @@ async function getMasterclassVideo() {
 }
 
 export default async function MasterclassPage() {
-  const [categoryTitles, { videoUrl, posterUrl }] = await Promise.all([getCategoryTitles(), getMasterclassVideo()]);
+  const { videoUrl, posterUrl } = await getMasterclassVideo();
 
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
@@ -91,136 +97,87 @@ export default async function MasterclassPage() {
       </header>
 
       <main className="flex-1">
-        <section id="inscription" className="scroll-mt-20">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.05fr] lg:gap-10 lg:px-8">
-            <Reveal className="text-center lg:text-left">
-              <Badge variant="outline">Masterclass gratuite</Badge>
-              <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
-                Comment lancer votre <GradientText>conciergerie Airbnb</GradientText>, du studio à la villa de
-                luxe
+        <section
+          id="inscription"
+          className="scroll-mt-20"
+          style={{
+            background:
+              "radial-gradient(ellipse 900px 500px at 50% -10%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 70%)",
+          }}
+        >
+          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <Badge variant="outline">Formation gratuite</Badge>
+              <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
+                Comment signer votre premier <GradientText>propriétaire</GradientText> et lancer votre conciergerie
+                Airbnb
               </h1>
-              <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground lg:mx-0">
-                La méthode qu&apos;on applique nous-mêmes pour gérer plus de 120 biens entre Monaco et la Côte
-                d&apos;Azur, expliquée en vidéo par Mehdi &amp; Jacques.
+              <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+                La méthode exacte de Mehdi &amp; Jacques, qui gèrent déjà 120+ biens entre Monaco et la Côte
+                d&apos;Azur — du studio à la villa de luxe.
               </p>
-              <ul className="mx-auto mt-8 max-w-sm space-y-2.5 text-left text-sm text-foreground lg:mx-0">
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
-                  Les modèles de conciergerie qui existent, et lequel choisir
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gold" />
-                  Comment trouver et signer vos premiers propriétaires
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-emerald" />
-                  Les erreurs qui coûtent le plus cher en démarrant
-                </li>
-              </ul>
             </Reveal>
 
-            <Reveal delay={0.15}>
+            <Reveal delay={0.1} className="mt-6 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
+              <ClientAvatars total={50} shown={5} size={36} />
+              <p className="text-sm font-medium text-muted-foreground">
+                <span className="text-foreground">50+ propriétaires</span> nous font déjà confiance
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.15} className="mt-10">
               <MasterclassGate videoUrl={videoUrl} posterUrl={posterUrl} />
             </Reveal>
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-            <RevealGroup className="grid grid-cols-1 gap-6 text-center sm:grid-cols-3">
-              <RevealItem className="flex flex-col items-center gap-1.5">
-                <MapPin className="size-5 text-primary" />
-                <p className="text-2xl font-bold text-foreground">120+</p>
-                <p className="text-sm text-muted-foreground">biens gérés, Monaco &amp; Côte d&apos;Azur</p>
-              </RevealItem>
-              <RevealItem className="flex flex-col items-center gap-1.5">
-                <Users className="size-5 text-primary" />
-                <p className="text-2xl font-bold text-foreground">UHNW</p>
-                <p className="text-sm text-muted-foreground">clientèle exigeante, du studio à la villa de luxe</p>
-              </RevealItem>
-              <RevealItem className="flex flex-col items-center gap-1.5">
-                <BookOpen className="size-5 text-primary" />
-                <p className="text-2xl font-bold text-foreground">24 modules</p>
-                <p className="text-sm text-muted-foreground">directement issus de notre propre activité</p>
-              </RevealItem>
-            </RevealGroup>
-          </div>
-        </section>
-
-        <section className="border-t border-border">
-          <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <section
+          className="border-t border-border bg-muted/30"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklch, var(--primary) 5%, transparent), transparent 25%), var(--muted)",
+          }}
+        >
+          <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
                 Ce que vous allez <GradientText>découvrir</GradientText>
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Le même fil conducteur que notre formation complète, en version accélérée.
+                5 étapes, de votre première recherche à votre premier propriétaire signé.
               </p>
             </Reveal>
 
-            <RevealGroup className="mt-12 space-y-3">
-              {categoryTitles.map((title, i) => {
-                const Icon = ICONS[i % ICONS.length];
-                return (
-                  <RevealItem key={title}>
-                    <div className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
-                        {i + 1}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <Icon className="size-4 text-primary" />
-                          <p className="font-semibold text-foreground">{title}</p>
-                        </div>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {CATEGORY_TEASERS[title] ?? "Un module de notre programme complet."}
-                        </p>
-                      </div>
-                    </div>
-                  </RevealItem>
-                );
-              })}
-            </RevealGroup>
+            <div className="mt-12">
+              <RoadmapTimeline />
+            </div>
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/30">
+        <section className="border-t border-border">
           <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
                 Pour qui, <GradientText>quel que soit</GradientText> votre point de départ
               </h2>
             </Reveal>
-            <RevealGroup className="mt-12 grid gap-6 sm:grid-cols-3">
-              <RevealItem>
-                <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm">
-                  <p className="font-semibold text-foreground">Vous démarrez de zéro</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Aucune expérience en immobilier n&apos;est nécessaire pour commencer.
-                  </p>
-                </div>
-              </RevealItem>
-              <RevealItem>
-                <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm">
-                  <p className="font-semibold text-foreground">Vous gérez déjà quelques biens</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Structurez votre activité pour arrêter de tout faire dans l&apos;urgence.
-                  </p>
-                </div>
-              </RevealItem>
-              <RevealItem>
-                <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm">
-                  <p className="font-semibold text-foreground">Vous visez le haut de gamme</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Découvrez comment on opère nous-mêmes une clientèle UHNW au quotidien.
-                  </p>
-                </div>
-              </RevealItem>
+            <RevealGroup className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {POUR_QUI.map((item) => (
+                <RevealItem key={item.title}>
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <span className="mx-auto flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <item.icon className="size-5" />
+                    </span>
+                    <p className="mt-4 font-semibold text-foreground">{item.title}</p>
+                    <p className="mt-2 text-sm text-muted-foreground">{item.text}</p>
+                  </div>
+                </RevealItem>
+              ))}
             </RevealGroup>
           </div>
         </section>
 
-        <section className="border-t border-border">
+        <section className="border-t border-border bg-muted/30">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
@@ -256,13 +213,13 @@ export default async function MasterclassPage() {
           <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-                Ne laissez pas cette masterclass finir <GradientText>dans vos favoris</GradientText>
+                Ne laissez pas cette formation finir <GradientText>dans vos favoris</GradientText>
               </h2>
               <p className="mt-4 text-lg text-pretty text-muted-foreground">
                 Prenez 5 minutes maintenant, pendant que vous y pensez.
               </p>
               <Button render={<a href="#inscription" />} nativeButton={false} size="lg" className="mt-8">
-                Accéder à la masterclass gratuite
+                Accéder à la formation gratuite
               </Button>
             </Reveal>
           </div>
