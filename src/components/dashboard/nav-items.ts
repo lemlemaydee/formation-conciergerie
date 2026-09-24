@@ -17,11 +17,17 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+export interface NavChild {
+  href: string;
+  label: string;
+}
+
 export interface NavItem {
   href: string;
   label: string;
   icon: LucideIcon;
   exact?: boolean;
+  children?: NavChild[];
 }
 
 // Ce fichier ne doit être importé que par des Client Components : les
@@ -46,7 +52,16 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
   { href: "/admin/temoignages", label: "Témoignages vidéo", icon: Clapperboard },
   { href: "/admin/rendez-vous", label: "Rendez-vous", icon: CalendarClock },
   { href: "/admin/statistiques", label: "Statistiques", icon: BarChart3 },
-  { href: "/admin/veille", label: "Veille concurrentielle", icon: Radar },
+  {
+    href: "/admin/veille",
+    label: "Veille concurrentielle",
+    icon: Radar,
+    children: [
+      { href: "/admin/veille", label: "Formateurs & stratégie commerciale" },
+      { href: "/admin/veille/idees", label: "Banque d'idées vidéos" },
+      { href: "/admin/veille/reseaux-sociaux", label: "Stratégie réseaux sociaux" },
+    ],
+  },
   { href: "/admin/outils", label: "Outils affiliés", icon: Wrench },
   { href: "/admin/offres", label: "Offres", icon: Tag },
   { href: "/admin/lives", label: "Lives", icon: Radio },

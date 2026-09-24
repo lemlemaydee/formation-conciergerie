@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, User as UserIcon, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { LogOut, User as UserIcon, ChevronsUpDown, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logout } from "@/app/auth/actions";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -15,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS } from "@/components/dashboard/nav-items";
+import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS, type NavItem } from "@/components/dashboard/nav-items";
 
 export function NavSidebar({
   variant,
@@ -43,15 +44,16 @@ export function NavSidebar({
       </div>
 
       <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-        {items.map((item) => {
-          const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
-          return (
+        {items.map((item) =>
+          item.children ? (
+            <NavGroup key={item.href} item={item} pathname={pathname} />
+          ) : (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-                active
+                (item.exact ? pathname === item.href : pathname.startsWith(item.href))
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
@@ -59,14 +61,71 @@ export function NavSidebar({
               <item.icon className="size-4 shrink-0" />
               {item.label}
             </Link>
-          );
-        })}
+          ),
+        )}
       </nav>
 
       <div className="shrink-0 border-t border-border p-3">
         <ProfileMenu userLabel={userLabel} userEmail={userEmail} side="top" />
       </div>
     </aside>
+  );
+}
+
+function NavGroup({ item, pathname }: { item: NavItem; pathname: string }) {
+  const active = pathname.startsWith(item.href);
+  const [open, setOpen] = useState(active);
+
+  const [trackedActive, setTrackedActive] = useState(active);
+  if (active !== trackedActive) {
+    setTrackedActive(active);
+    if (active) setOpen(true);
+  }
+
+  return (
+    <div>
+      <div
+        className={cn(
+          "flex items-center rounded-xl text-sm font-medium transition-colors",
+          active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+        )}
+      >
+        <Link href={item.href} className="flex flex-1 items-center gap-3 px-3 py-2.5">
+          <item.icon className="size-4 shrink-0" />
+          {item.label}
+        </Link>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          className="pr-3 py-2.5 pl-1"
+          aria-label={open ? "Réduire" : "Développer"}
+          aria-expanded={open}
+        >
+          <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
+        </button>
+      </div>
+      {open && (
+        <div className="mt-1 ml-4 space-y-1 border-l border-border pl-4">
+          {item.children!.map((child) => {
+            const childActive = pathname === child.href;
+            return (
+              <Link
+                key={child.href}
+                href={child.href}
+                className={cn(
+                  "block rounded-lg px-3 py-2 text-sm transition-colors",
+                  childActive
+                    ? "bg-primary/10 font-medium text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                {child.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
