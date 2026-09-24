@@ -111,7 +111,12 @@ export function RoadmapTimeline() {
       </div>
 
       <div className="mt-10 text-center">
-        <Button render={<a href="#inscription" />} nativeButton={false} size="lg">
+        <Button
+          render={<a href="#inscription" />}
+          nativeButton={false}
+          size="lg"
+          className="h-14 px-8 text-base font-semibold"
+        >
           Accéder à la formation gratuite
           <ArrowRight className="size-4" />
         </Button>

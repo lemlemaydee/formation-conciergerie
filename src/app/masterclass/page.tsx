@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Sprout, TrendingUp, Gem } from "lucide-react";
+import { Sprout, TrendingUp, Gem, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   Accordion,
@@ -15,6 +15,7 @@ import { GradientText } from "@/components/landing/gradient-text";
 import { ClientAvatars } from "@/components/landing/client-avatars";
 import { MasterclassGate } from "@/app/masterclass/masterclass-gate";
 import { RoadmapTimeline } from "@/app/masterclass/roadmap-timeline";
+import { SuccessGrid } from "@/app/masterclass/success-grid";
 
 export const metadata: Metadata = {
   title: "Formation gratuite — Formation Conciergerie",
@@ -86,7 +87,7 @@ export default async function MasterclassPage() {
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
               FC
@@ -107,7 +108,10 @@ export default async function MasterclassPage() {
         >
           <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
             <Reveal>
-              <Badge variant="outline">Formation gratuite</Badge>
+              <Badge variant="outline" className="gap-1.5">
+                <Sparkles className="size-3" />
+                Formation gratuite
+              </Badge>
               <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
                 Comment signer votre premier <GradientText>propriétaire</GradientText> et lancer votre conciergerie
                 Airbnb
@@ -128,6 +132,27 @@ export default async function MasterclassPage() {
             <Reveal delay={0.15} className="mt-10">
               <MasterclassGate videoUrl={videoUrl} posterUrl={posterUrl} />
             </Reveal>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
+          <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <Badge variant="outline">Résultats</Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Des profils différents, <GradientText>un même point de départ</GradientText>
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Voici ce que certains de nos élèves ont obtenu en appliquant la méthode.
+              </p>
+            </Reveal>
+            <div className="mt-12">
+              <SuccessGrid />
+            </div>
+            <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-muted-foreground">
+              Résultats individuels présentés à titre d&apos;exemple. Ils dépendent du marché, du temps investi et de
+              l&apos;application de la méthode, et ne constituent pas une promesse de résultat identique.
+            </p>
           </div>
         </section>
 
@@ -163,13 +188,14 @@ export default async function MasterclassPage() {
             </Reveal>
             <RevealGroup className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
               {POUR_QUI.map((item) => (
-                <RevealItem key={item.title}>
-                  <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                    <span className="mx-auto flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <item.icon className="size-5" />
+                <RevealItem key={item.title} className="group relative h-full">
+                  <div className="absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-br from-primary/30 via-primary/10 to-transparent opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="h-full rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
+                      <item.icon className="size-6" />
                     </span>
                     <p className="mt-4 font-semibold text-foreground">{item.title}</p>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.text}</p>
+                    <p className="mt-2 text-sm text-foreground/75">{item.text}</p>
                   </div>
                 </RevealItem>
               ))}
@@ -218,7 +244,12 @@ export default async function MasterclassPage() {
               <p className="mt-4 text-lg text-pretty text-muted-foreground">
                 Prenez 5 minutes maintenant, pendant que vous y pensez.
               </p>
-              <Button render={<a href="#inscription" />} nativeButton={false} size="lg" className="mt-8">
+              <Button
+                render={<a href="#inscription" />}
+                nativeButton={false}
+                size="lg"
+                className="mt-8 h-14 px-8 text-base font-semibold"
+              >
                 Accéder à la formation gratuite
               </Button>
             </Reveal>
