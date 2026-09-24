@@ -14,7 +14,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS, type NavItem } from "@/components/dashboard/nav-items";
+import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS, isNavChildActive, type NavItem } from "@/components/dashboard/nav-items";
 import { ProfileMenu } from "@/components/dashboard/nav-sidebar";
 
 function MobileNavGroup({ item, pathname }: { item: NavItem; pathname: string }) {
@@ -55,7 +55,7 @@ function MobileNavGroup({ item, pathname }: { item: NavItem; pathname: string })
               nativeButton={false}
               className={cn(
                 "block rounded-lg px-3 py-2 text-sm hover:bg-accent",
-                pathname === child.href ? "font-medium text-primary" : "text-foreground",
+                isNavChildActive(pathname, item.children!, child) ? "font-medium text-primary" : "text-foreground",
               )}
               render={<Link href={child.href} />}
             >

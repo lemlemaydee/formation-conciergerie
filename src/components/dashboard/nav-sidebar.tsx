@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS, type NavItem } from "@/components/dashboard/nav-items";
+import { DASHBOARD_NAV_ITEMS, ADMIN_NAV_ITEMS, isNavChildActive, type NavItem } from "@/components/dashboard/nav-items";
 
 export function NavSidebar({
   variant,
@@ -107,7 +107,7 @@ function NavGroup({ item, pathname }: { item: NavItem; pathname: string }) {
       {open && (
         <div className="mt-1 ml-4 space-y-1 border-l border-border pl-4">
           {item.children!.map((child) => {
-            const childActive = pathname === child.href;
+            const childActive = isNavChildActive(pathname, item.children!, child);
             return (
               <Link
                 key={child.href}

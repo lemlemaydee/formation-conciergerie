@@ -68,3 +68,13 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
   { href: "/admin/communaute", label: "Communauté", icon: MessagesSquare },
   { href: "/admin/parametres", label: "Paramètres", icon: Settings },
 ];
+
+// Plusieurs enfants peuvent partager un préfixe (ex. /admin/veille et
+// /admin/veille/reseaux-sociaux/alex-hormozi) : seul le préfixe le plus
+// long qui correspond au pathname courant doit être actif.
+export function isNavChildActive(pathname: string, children: NavChild[], child: NavChild): boolean {
+  const matching = children
+    .filter((c) => pathname === c.href || pathname.startsWith(`${c.href}/`))
+    .sort((a, b) => b.href.length - a.href.length)[0];
+  return matching?.href === child.href;
+}
