@@ -2,12 +2,13 @@ import { Settings } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { PlaceholderSection } from "@/components/dashboard/placeholder-section";
 import { HeroVideoSettings } from "@/app/admin/parametres/hero-video-settings";
+import { MasterclassVideoSettings } from "@/app/admin/parametres/masterclass-video-settings";
 
 export default async function AdminParametresPage() {
   const supabase = await createClient();
   const { data: settings } = await supabase
     .from("site_settings")
-    .select("hero_video_url, hero_video_poster_url")
+    .select("hero_video_url, hero_video_poster_url, masterclass_video_url, masterclass_video_poster_url")
     .limit(1)
     .single();
 
@@ -23,6 +24,11 @@ export default async function AdminParametresPage() {
       <HeroVideoSettings
         initialVideoUrl={settings?.hero_video_url ?? null}
         initialPosterUrl={settings?.hero_video_poster_url ?? null}
+      />
+
+      <MasterclassVideoSettings
+        initialVideoUrl={settings?.masterclass_video_url ?? null}
+        initialPosterUrl={settings?.masterclass_video_poster_url ?? null}
       />
 
       <PlaceholderSection
