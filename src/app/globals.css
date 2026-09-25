@@ -196,8 +196,10 @@
   background-color: var(--background);
 }
 
-/* Fond en grille — utilisé UNIQUEMENT sur la section héro (pas sur toute la
-   page) : .mc-grid est un bloc borné, donc la grille s'arrête net avec lui. */
+/* Fond en grille — utilisé seulement sur certaines sections (pas toute la
+   page) : .mc-grid est un bloc borné, et le masque fait un fondu en haut ET
+   en bas de CE bloc, pour que la grille se fonde avec les sections voisines
+   au lieu d'apparaître/disparaître d'un coup. */
 .mc-grid {
   position: relative;
 }
@@ -214,8 +216,8 @@
     radial-gradient(ellipse 1200px 700px at 50% 0%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%);
   background-size: 44px 44px, 44px 44px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, black, transparent 100%);
-  mask-image: linear-gradient(to bottom, black, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
 }
 
 .mc-grid > * {

@@ -156,7 +156,9 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <ProofMarquee />
+        <Reveal>
+          <ProofMarquee />
+        </Reveal>
 
         <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -175,7 +177,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border">
+        <section className="mc-grid border-t border-border">
           <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <Badge className={BADGE_BLUE}>Témoignages</Badge>
@@ -187,8 +189,7 @@ export default async function MasterclassPage() {
               <TestimonialCarousel />
             </div>
             <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-muted-foreground">
-              Témoignages présentés à titre d&apos;exemple en attendant la publication de nos premiers vrais retours
-              élèves.
+              Emplacements réservés en attendant la publication de nos premiers vrais témoignages vidéo élèves.
             </p>
           </div>
         </section>
@@ -278,7 +279,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border">
+        <section className="mc-grid border-t border-border">
           <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
@@ -357,7 +358,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border">
+        <section className="mc-grid border-t border-border">
           <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
               <Badge className={BADGE_BLUE}>Démarrer</Badge>
