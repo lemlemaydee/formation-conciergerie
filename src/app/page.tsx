@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, Gift, TrendingUp as TrendingUpIcon, LogIn } from "lucide-react";
+import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, LogIn } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   Accordion,
@@ -216,28 +216,6 @@ export default async function Home() {
         </section>
 
         <section className="border-t border-border">
-          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
-            <Reveal className="flex flex-col items-center gap-4">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <Gift className="size-6" />
-              </span>
-              <Badge className={BADGE_BLUE}>Aucun piège</Badge>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-                Pourquoi cette formation est <GradientText>gratuite</GradientText>
-              </h2>
-              <p className="max-w-xl text-lg text-pretty text-muted-foreground">
-                On ne vous vend rien sur cette page. On préfère vous montrer notre méthode plutôt que vous en parler —
-                si elle vous convainc, vous pourrez ensuite découvrir nos formations complètes, sans aucune
-                obligation.
-              </p>
-              <p className="text-lg font-bold text-foreground">
-                Vous gagnez du temps, on vous démontre qu&apos;on sait de quoi on parle.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <Badge className={BADGE_BLUE}>3 étapes</Badge>
@@ -300,35 +278,6 @@ export default async function Home() {
                 </RevealItem>
               ))}
             </RevealGroup>
-          </div>
-        </section>
-
-        <section className="border-t border-border">
-          <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-            <Reveal className="mx-auto max-w-2xl text-center">
-              <Badge className={BADGE_BLUE}>
-                <TrendingUpIcon className="size-3" />
-                Pourquoi maintenant
-              </Badge>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-                Le marché n&apos;a jamais été aussi <GradientText>favorable</GradientText>
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1} className="mx-auto mt-8 max-w-2xl space-y-5 text-center text-lg text-muted-foreground">
-              <p>
-                De plus en plus de propriétaires cherchent quelqu&apos;un de sérieux pour gérer leur bien — ils
-                n&apos;ont ni le temps ni l&apos;envie de s&apos;en occuper eux-mêmes.
-              </p>
-              <p>
-                Le nombre de locations courte durée continue de progresser chaque année, en France comme sur la Côte
-                d&apos;Azur. Ce qui manque, ce ne sont pas les biens à gérer : ce sont les conciergeries capables de
-                bien le faire.
-              </p>
-              <p className="text-xl font-bold text-foreground">
-                Ce n&apos;est pas une question de travailler plus dur. C&apos;est une question de structurer
-                correctement, dès le début.
-              </p>
-            </Reveal>
           </div>
         </section>
 
