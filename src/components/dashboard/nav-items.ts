@@ -59,6 +59,7 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
     children: [
       { href: "/admin/veille", label: "Formateurs & stratégie commerciale" },
       { href: "/admin/veille/idees", label: "Banque d'idées vidéos" },
+      { href: "/admin/veille/idees/calendrier", label: "Mon calendrier d'idées" },
       { href: "/admin/veille/reseaux-sociaux", label: "Stratégie réseaux sociaux" },
     ],
   },

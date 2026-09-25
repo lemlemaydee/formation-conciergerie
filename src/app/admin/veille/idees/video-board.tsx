@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import {
   Plus,
   Pencil,
@@ -19,6 +20,9 @@ import {
   Share2,
   FileText,
   NotebookPen,
+  Sparkles,
+  ArrowRight,
+  MessageSquareText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -157,6 +161,25 @@ export function VideoBoard({ videos, accounts }: { videos: VideoRow[]; accounts:
         <StatCard icon={Clapperboard} label="Tourné" value={String(counts.tourne)} hint="En attente de publication" />
         <StatCard icon={CheckCircle2} label="Publié" value={String(counts.publie)} hint="Déjà en ligne" />
       </div>
+
+      <Link
+        href="/admin/veille/idees/calendrier"
+        className="group flex items-center justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      >
+        <div className="flex items-center gap-4">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Sparkles className="size-5" />
+          </span>
+          <div>
+            <p className="font-semibold text-foreground">Mon calendrier d&apos;idées</p>
+            <p className="text-sm text-muted-foreground">
+              Des idées de vidéos originales pour Formation Conciergerie, générées à partir de tout ce qui est
+              repéré ci-dessous.
+            </p>
+          </div>
+        </div>
+        <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
 
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
@@ -330,13 +353,62 @@ export function VideoBoard({ videos, accounts }: { videos: VideoRow[]; accounts:
         <p className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-10 text-center text-sm text-muted-foreground">
           {hasActiveFilters ? "Aucune vidéo ne correspond à cette recherche." : "Aucune vidéo pour l'instant — clique sur « Nouvelle vidéo » pour commencer."}
         </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      ) : accountFilter !== ALL ? (
+        <div className="flex flex-col gap-4">
           {filtered.map((video) => (
             <VideoCard key={video.id} video={video} account={video.account_id ? (accountMap.get(video.account_id) ?? null) : null} accounts={accounts} />
           ))}
         </div>
+      ) : (
+        <GroupedByAccount videos={filtered} accounts={accounts} />
       )}
+    </div>
+  );
+}
+
+function GroupedByAccount({ videos, accounts }: { videos: VideoRow[]; accounts: AccountRow[] }) {
+  const groups = useMemo(() => {
+    const byAccount = new Map<string, VideoRow[]>();
+    const unmapped: VideoRow[] = [];
+    for (const v of videos) {
+      if (!v.account_id) {
+        unmapped.push(v);
+        continue;
+      }
+      const list = byAccount.get(v.account_id) ?? [];
+      list.push(v);
+      byAccount.set(v.account_id, list);
+    }
+    const ordered = accounts
+      .filter((a) => byAccount.has(a.id))
+      .map((a) => ({ account: a, items: byAccount.get(a.id)! }));
+    return unmapped.length > 0 ? [...ordered, { account: null, items: unmapped }] : ordered;
+  }, [videos, accounts]);
+
+  return (
+    <div className="flex flex-col gap-8">
+      {groups.map(({ account, items }) => (
+        <div key={account?.id ?? "sans-compte"} className="flex flex-col gap-4">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            {account ? (
+              <>
+                {account.handle}
+                {account.display_name && <span className="font-normal text-muted-foreground">— {account.display_name}</span>}
+              </>
+            ) : (
+              <span className="text-muted-foreground">Sans compte identifié</span>
+            )}
+            <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+              {items.length}
+            </span>
+          </h3>
+          <div className="flex flex-col gap-4">
+            {items.map((video) => (
+              <VideoCard key={video.id} video={video} account={account} accounts={accounts} />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -453,28 +525,48 @@ function VideoCard({ video, account, accounts }: { video: VideoRow; account: Acc
       )}
 
       {video.comment_themes && (
-        <p className="text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">Viewers cherchent : </span>
-          {video.comment_themes}
-        </p>
+        <div className="flex items-start gap-2 rounded-lg border border-border bg-muted/20 px-3 py-2">
+          <MessageSquareText className="mt-0.5 size-3.5 shrink-0 text-primary" />
+          <p className="text-xs text-foreground/90">
+            <span className="font-semibold text-foreground">Ce que cherchent les viewers : </span>
+            {video.comment_themes}
+          </p>
+        </div>
       )}
 
-      <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
-        <span className="flex items-center gap-2">
-          {video.content_summary && (
-            <span className="flex items-center gap-1" title="Résumé structuré renseigné">
-              <FileText className="size-3.5" />
-            </span>
-          )}
-          {video.script && (
-            <span className="flex items-center gap-1" title="Script perso renseigné">
-              <NotebookPen className="size-3.5" />
-            </span>
-          )}
-          {!video.content_summary && !video.script && video.performance_note && <span className="truncate">{video.performance_note}</span>}
-        </span>
+      {video.content_summary && (
+        <div className="flex items-start gap-2 rounded-lg border border-border bg-muted/20 px-3 py-2">
+          <FileText className="mt-0.5 size-3.5 shrink-0 text-primary" />
+          <p className="text-xs text-foreground/90">
+            <span className="font-semibold text-foreground">Résumé structuré : </span>
+            {video.content_summary}
+          </p>
+        </div>
+      )}
+
+      {video.script && (
+        <div className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2">
+          <NotebookPen className="mt-0.5 size-3.5 shrink-0 text-primary" />
+          <p className="text-xs text-foreground/90">
+            <span className="font-semibold text-foreground">Notre script : </span>
+            {video.script}
+          </p>
+        </div>
+      )}
+
+      {!video.content_summary && !video.script && video.performance_note && (
+        <p className="text-xs text-muted-foreground italic">{video.performance_note}</p>
+      )}
+
+      <div className="mt-auto flex items-center justify-end gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
         {video.video_url && (
-          <a href={video.video_url} target="_blank" rel="noreferrer" className="flex shrink-0 items-center gap-1 hover:text-primary" aria-label="Voir la vidéo source">
+          <a
+            href={video.video_url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex shrink-0 items-center gap-1.5 font-medium hover:text-primary"
+          >
+            Voir la vidéo source
             <ExternalLink className="size-3.5" />
           </a>
         )}
