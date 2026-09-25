@@ -16,6 +16,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { registerForMasterclass, type RegisterState } from "@/app/masterclass/actions";
+import { archivo, inter } from "@/app/masterclass/fonts";
 
 const initialState: RegisterState = { error: null, success: false };
 
@@ -49,7 +50,9 @@ export function MasterclassGate({ videoUrl, posterUrl }: { videoUrl: string | nu
               >
                 Accéder à la formation gratuite
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent
+                className={`${inter.variable} ${archivo.variable} theme-masterclass-tokens sm:max-w-md`}
+              >
                 <DialogHeader>
                   <DialogTitle>Accédez à la formation gratuite</DialogTitle>
                   <DialogDescription>Entrez vos coordonnées, la vidéo se débloque juste après.</DialogDescription>

@@ -142,6 +142,76 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Thème sombre dédié à la page /masterclass — inspiré du style OFM Starter
+   (police, radius, fond en grille) mais avec les couleurs de marque Formation
+   Conciergerie. Scindé du .dark{} global pour ne pas affecter le reste du site.
+   .theme-masterclass-tokens ne pose que les variables (sûr à appliquer sur un
+   élément déjà positionné, ex. le popup d'un Dialog portalé hors de l'arbre) ;
+   .theme-masterclass ajoute la mise en page (fond en grille, position) et n'est
+   utilisé que sur le conteneur racine de la page. */
+.theme-masterclass-tokens {
+  --radius: 0.9rem;
+  --background: oklch(0.16 0.014 55);
+  --foreground: oklch(0.97 0.006 85);
+  --card: oklch(0.215 0.016 55);
+  --card-foreground: oklch(0.97 0.006 85);
+  --popover: oklch(0.215 0.016 55);
+  --popover-foreground: oklch(0.97 0.006 85);
+  --primary: oklch(0.62 0.19 263.3); /* Bleu Klein éclairci pour contraste sur fond sombre */
+  --primary-light: oklch(0.74 0.13 263.3);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.27 0.014 55);
+  --secondary-foreground: oklch(0.97 0.006 85);
+  --muted: oklch(0.24 0.014 55);
+  --muted-foreground: oklch(0.68 0.014 70);
+  --accent: oklch(0.27 0.014 55);
+  --accent-foreground: oklch(0.97 0.006 85);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.62 0.19 263.3 / 0.5);
+  --gold: oklch(0.8 0.14 82);
+  --gold-foreground: oklch(0.2 0.05 82);
+  --emerald: oklch(0.72 0.15 155);
+  --emerald-foreground: oklch(0.14 0.03 155);
+
+  font-family: var(--font-mc-sans), sans-serif;
+}
+
+.theme-masterclass-tokens h1,
+.theme-masterclass-tokens h2,
+.theme-masterclass-tokens h3,
+.theme-masterclass-tokens h4 {
+  font-family: var(--font-mc-display), sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.theme-masterclass {
+  background-color: var(--background);
+  position: relative;
+}
+
+.theme-masterclass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
+    radial-gradient(ellipse 1200px 700px at 50% -5%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 70%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, black, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black, black 60%, transparent 100%);
+}
+
+.theme-masterclass > * {
+  position: relative;
+  z-index: 1;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

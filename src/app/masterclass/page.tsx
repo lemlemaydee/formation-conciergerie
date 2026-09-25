@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Sprout, TrendingUp, Gem, Sparkles } from "lucide-react";
+import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, Gift, TrendingUp as TrendingUpIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { archivo, inter } from "@/app/masterclass/fonts";
 import {
   Accordion,
   AccordionContent,
@@ -37,6 +38,21 @@ const POUR_QUI = [
     icon: Gem,
     title: "Vous visez le haut de gamme",
     text: "Découvrez comment on opère nous-mêmes des biens d'exception, pour une clientèle exigeante, entre Monaco et la Côte d'Azur.",
+  },
+];
+
+const STEPS_ACCES = [
+  {
+    title: "Inscrivez-vous en 2 minutes",
+    text: "Prénom, nom, email et téléphone — aucune expérience ni bien en gestion n'est requis.",
+  },
+  {
+    title: "Débloquez la vidéo immédiatement",
+    text: "Vous accédez à la formation complète dès votre inscription, sans attente et sans email à confirmer.",
+  },
+  {
+    title: "Passez à l'action avec un plan clair",
+    text: "Vous repartez avec la méthode et les 5 étapes pour signer votre premier propriétaire.",
   },
 ];
 
@@ -85,8 +101,10 @@ export default async function MasterclassPage() {
   const { videoUrl, posterUrl } = await getMasterclassVideo();
 
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden">
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-md">
+    <div
+      className={`${inter.variable} ${archivo.variable} theme-masterclass-tokens theme-masterclass flex min-h-screen flex-col overflow-hidden`}
+    >
+      <header className="border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
@@ -98,28 +116,32 @@ export default async function MasterclassPage() {
       </header>
 
       <main className="flex-1">
-        <section
-          id="inscription"
-          className="scroll-mt-20"
-          style={{
-            background:
-              "radial-gradient(ellipse 900px 500px at 50% -10%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 70%)",
-          }}
-        >
+        <section id="inscription" className="scroll-mt-20">
           <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
-            <Reveal>
-              <Badge variant="outline" className="gap-1.5">
-                <Sparkles className="size-3" />
-                Formation gratuite
-              </Badge>
-              <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
+            <Reveal className="flex flex-col items-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <Badge variant="secondary" className="gap-1.5">
+                  <span className="size-1.5 rounded-full bg-emerald" />
+                  Nouveau
+                </Badge>
+                <Badge variant="outline" className="gap-1.5">
+                  <Sparkles className="size-3" />
+                  Formation gratuite
+                </Badge>
+              </div>
+
+              <h1 className="mx-auto max-w-2xl text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl">
                 Comment signer votre premier <GradientText>propriétaire</GradientText> et lancer votre conciergerie
                 Airbnb
               </h1>
-              <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+              <p className="mx-auto max-w-xl text-lg text-pretty text-muted-foreground">
                 La méthode exacte de Mehdi &amp; Jacques, qui gèrent déjà 120+ biens entre Monaco et la Côte
                 d&apos;Azur — du studio à la villa de luxe.
               </p>
+              <Badge variant="secondary" className="gap-1.5 bg-gold text-gold-foreground">
+                <ShieldCheck className="size-3" />
+                Aucune expérience requise
+              </Badge>
             </Reveal>
 
             <Reveal delay={0.1} className="mt-6 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
@@ -136,6 +158,30 @@ export default async function MasterclassPage() {
         </section>
 
         <section className="border-t border-border">
+          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="flex flex-col items-center gap-4">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
+                <Gift className="size-6" />
+              </span>
+              <Badge variant="outline">Aucun piège</Badge>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Pourquoi cette formation est <GradientText>gratuite</GradientText>
+              </h2>
+              <p className="max-w-xl text-lg text-pretty text-muted-foreground">
+                On ne vous vend rien sur cette page. On préfère vous montrer notre méthode plutôt que vous en parler —
+                si elle vous convainc, vous pourrez ensuite découvrir nos formations complètes, sans aucune
+                obligation.
+              </p>
+              <p className="text-lg font-bold text-foreground">
+                Vous gagnez du temps, on vous démontre qu&apos;on sait de quoi on parle.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section
+          className="border-t border-border bg-muted/40"
+        >
           <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <Badge variant="outline">Résultats</Badge>
@@ -156,13 +202,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section
-          className="border-t border-border bg-muted/30"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklch, var(--primary) 5%, transparent), transparent 25%), var(--muted)",
-          }}
-        >
+        <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
@@ -176,6 +216,47 @@ export default async function MasterclassPage() {
             <div className="mt-12">
               <RoadmapTimeline />
             </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-muted/40">
+          <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <Badge variant="outline">3 étapes</Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Comment accéder à la <GradientText>formation</GradientText>
+              </h2>
+            </Reveal>
+
+            <RevealGroup className="mt-12 grid grid-cols-1 gap-5">
+              {STEPS_ACCES.map((step, i) => (
+                <RevealItem key={step.title}>
+                  <div className="flex items-start gap-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <span
+                      className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground"
+                      style={{ boxShadow: "0 0 24px color-mix(in oklch, var(--primary) 45%, transparent)" }}
+                    >
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="text-lg font-bold text-foreground">{step.title}</p>
+                      <p className="mt-1 text-muted-foreground">{step.text}</p>
+                    </div>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+
+            <Reveal delay={0.1} className="mt-10 text-center">
+              <Button
+                render={<a href="#inscription" />}
+                nativeButton={false}
+                size="lg"
+                className="h-14 px-8 text-base font-semibold"
+              >
+                Accéder à la formation gratuite
+              </Button>
+            </Reveal>
           </div>
         </section>
 
@@ -203,7 +284,36 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/30">
+        <section className="border-t border-border bg-muted/40">
+          <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <Badge variant="outline" className="gap-1.5">
+                <TrendingUpIcon className="size-3" />
+                Pourquoi maintenant
+              </Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Le marché n&apos;a jamais été aussi <GradientText>favorable</GradientText>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1} className="mx-auto mt-8 max-w-2xl space-y-5 text-center text-lg text-muted-foreground">
+              <p>
+                De plus en plus de propriétaires cherchent quelqu&apos;un de sérieux pour gérer leur bien — ils
+                n&apos;ont ni le temps ni l&apos;envie de s&apos;en occuper eux-mêmes.
+              </p>
+              <p>
+                Le nombre de locations courte durée continue de progresser chaque année, en France comme sur la Côte
+                d&apos;Azur. Ce qui manque, ce ne sont pas les biens à gérer : ce sont les conciergeries capables de
+                bien le faire.
+              </p>
+              <p className="text-xl font-bold text-foreground">
+                Ce n&apos;est pas une question de travailler plus dur. C&apos;est une question de structurer
+                correctement, dès le début.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
@@ -231,14 +341,14 @@ export default async function MasterclassPage() {
           className="relative overflow-hidden border-t border-border"
           style={{
             background:
-              "radial-gradient(ellipse 420px 220px at 8% 65%, color-mix(in oklch, var(--gold) 28%, transparent), transparent 65%), " +
-              "radial-gradient(ellipse 420px 220px at 92% 65%, color-mix(in oklch, var(--primary) 28%, transparent), transparent 65%), " +
-              "linear-gradient(to bottom, transparent, transparent 80%, var(--muted) 130%)",
+              "radial-gradient(ellipse 420px 220px at 8% 65%, color-mix(in oklch, var(--gold) 22%, transparent), transparent 65%), " +
+              "radial-gradient(ellipse 420px 220px at 92% 65%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 65%)",
           }}
         >
           <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
-              <h2 className="text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+              <Badge variant="outline">Démarrer</Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
                 Ne laissez pas cette formation finir <GradientText>dans vos favoris</GradientText>
               </h2>
               <p className="mt-4 text-lg text-pretty text-muted-foreground">
