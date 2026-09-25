@@ -19,6 +19,7 @@ import { RoadmapTimeline } from "@/app/masterclass/roadmap-timeline";
 import { SuccessGrid } from "@/app/masterclass/success-grid";
 import { ProofMarquee } from "@/app/masterclass/proof-marquee";
 import { TestimonialCarousel } from "@/app/masterclass/testimonial-carousel";
+import { ProfileHeader } from "@/app/masterclass/profile-header";
 import { archivo, inter } from "@/app/masterclass/fonts";
 
 export const metadata: Metadata = {
@@ -52,12 +53,12 @@ const POUR_QUI = [
 
 const STEPS_ACCES = [
   {
-    title: "Inscrivez-vous en 2 minutes",
-    text: "Prénom, nom, email et téléphone — aucune expérience ni bien en gestion n'est requis.",
+    title: "Regardez la vidéo gratuitement",
+    text: "Aucune inscription requise — la vidéo est visible directement sur cette page, sans rien à remplir.",
   },
   {
-    title: "Débloquez la vidéo immédiatement",
-    text: "Vous accédez à la formation complète dès votre inscription, sans attente et sans email à confirmer.",
+    title: "Recevez le programme complet (en option)",
+    text: "Si vous voulez le programme détaillé par email, laissez vos coordonnées après la vidéo.",
   },
   {
     title: "Passez à l'action avec un plan clair",
@@ -68,7 +69,7 @@ const STEPS_ACCES = [
 const FAQ = [
   {
     q: "La formation est-elle vraiment gratuite ?",
-    a: "Oui, entièrement gratuite et sans engagement — on vous demande juste un prénom et un email pour vous donner l'accès.",
+    a: "Oui, la vidéo est accessible directement sur cette page, sans rien à remplir. Vous pouvez en plus recevoir le programme complet par email si vous le souhaitez.",
   },
   {
     q: "Faut-il déjà avoir de l'expérience en immobilier ?",
@@ -113,21 +114,14 @@ export default async function MasterclassPage() {
     <div
       className={`${inter.variable} ${archivo.variable} theme-masterclass-tokens theme-masterclass flex min-h-screen flex-col overflow-hidden`}
     >
-      <header className="border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-center px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-              FC
-            </span>
-            <span className="text-base font-semibold tracking-tight text-foreground">Formation Conciergerie</span>
-          </Link>
-        </div>
-      </header>
-
       <main className="flex-1">
-        <section id="inscription" className="scroll-mt-20">
-          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
-            <Reveal className="flex flex-col items-center gap-4">
+        <section id="inscription" className="mc-grid scroll-mt-20">
+          <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-20 lg:px-8">
+            <Reveal>
+              <ProfileHeader />
+            </Reveal>
+
+            <Reveal delay={0.05} className="mt-6 flex flex-col items-center gap-4">
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <Badge className={BADGE_BLUE}>
                   <span className="size-1.5 rounded-full bg-primary" />
@@ -143,10 +137,6 @@ export default async function MasterclassPage() {
                 Comment signer votre premier <GradientText>propriétaire</GradientText> et lancer votre conciergerie
                 Airbnb
               </h1>
-              <p className="mx-auto max-w-xl text-lg text-pretty text-muted-foreground">
-                La méthode exacte de Mehdi &amp; Jacques, qui gèrent déjà 120+ biens entre Monaco et la Côte
-                d&apos;Azur — du studio à la villa de luxe.
-              </p>
               <Badge className={BADGE_BLUE}>
                 <ShieldCheck className="size-3" />
                 Aucune expérience requise
@@ -154,9 +144,9 @@ export default async function MasterclassPage() {
             </Reveal>
 
             <Reveal delay={0.1} className="mt-6 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
-              <ClientAvatars total={50} shown={5} size={36} />
+              <ClientAvatars total={100} shown={5} size={36} />
               <p className="text-sm font-medium text-muted-foreground">
-                <span className="text-foreground">50+ propriétaires</span> nous font déjà confiance
+                <span className="text-foreground">100+ propriétaires</span> nous font déjà confiance
               </p>
             </Reveal>
 
@@ -282,7 +272,7 @@ export default async function MasterclassPage() {
                 className="h-14 px-8 text-base font-semibold"
                 style={CTA_GLOW}
               >
-                Accéder à la formation gratuite
+                Regarder la vidéo gratuite
               </Button>
             </Reveal>
           </div>
@@ -367,14 +357,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section
-          className="relative overflow-hidden border-t border-border"
-          style={{
-            background:
-              "radial-gradient(ellipse 480px 240px at 15% 60%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 65%), " +
-              "radial-gradient(ellipse 480px 240px at 85% 60%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 65%)",
-          }}
-        >
+        <section className="border-t border-border">
           <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
               <Badge className={BADGE_BLUE}>Démarrer</Badge>
@@ -391,7 +374,7 @@ export default async function MasterclassPage() {
                 className="mt-8 h-14 px-8 text-base font-semibold"
                 style={CTA_GLOW}
               >
-                Accéder à la formation gratuite
+                Regarder la vidéo gratuite
               </Button>
             </Reveal>
           </div>

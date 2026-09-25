@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Lock, Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, Mail } from "lucide-react";
 import { HeroVideo } from "@/components/landing/hero-video";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,8 @@ import { archivo, inter } from "@/app/masterclass/fonts";
 
 const initialState: RegisterState = { error: null, success: false };
 
+const CTA_GLOW = { boxShadow: "0 10px 36px -6px color-mix(in oklch, var(--primary) 55%, transparent)" };
+
 export function MasterclassGate({ videoUrl, posterUrl }: { videoUrl: string | null; posterUrl: string | null }) {
   const [open, setOpen] = useState(false);
   const [state, formAction, pending] = useActionState(registerForMasterclass, initialState);
@@ -32,37 +34,34 @@ export function MasterclassGate({ videoUrl, posterUrl }: { videoUrl: string | nu
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="relative overflow-hidden rounded-2xl">
-        <HeroVideo videoUrl={state.success ? videoUrl : null} posterUrl={state.success ? posterUrl : null} />
+      <HeroVideo videoUrl={videoUrl} posterUrl={posterUrl} />
 
-        {!state.success && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/85 px-6 text-center backdrop-blur-sm">
-            <span className="flex size-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Lock className="size-6" />
-            </span>
-            <p className="max-w-xs text-sm text-muted-foreground">
-              Entrez vos coordonnées pour débloquer la vidéo immédiatement.
+      <div className="mt-6 flex flex-col items-center gap-3 text-center">
+        {state.success ? (
+          <p className="flex items-center justify-center gap-1.5 text-sm font-medium text-emerald">
+            <CheckCircle2 className="size-4" />
+            Merci ! Vous recevrez le programme complet par email.
+          </p>
+        ) : (
+          <>
+            <p className="text-sm text-muted-foreground">
+              Envie d&apos;aller plus loin ? Recevez le programme complet par email.
             </p>
-
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger
                 render={
-                  <Button
-                    size="lg"
-                    className="h-14 px-8 text-base font-semibold"
-                    style={{ boxShadow: "0 10px 36px -6px color-mix(in oklch, var(--primary) 55%, transparent)" }}
-                    nativeButton={true}
-                  />
+                  <Button size="lg" className="h-14 px-8 text-base font-semibold" style={CTA_GLOW} nativeButton={true} />
                 }
               >
-                Accéder à la formation gratuite
+                <Mail className="size-4" />
+                Recevoir le programme complet
               </DialogTrigger>
               <DialogContent
                 className={`${inter.variable} ${archivo.variable} theme-masterclass-tokens sm:max-w-md`}
               >
                 <DialogHeader>
-                  <DialogTitle>Accédez à la formation gratuite</DialogTitle>
-                  <DialogDescription>Entrez vos coordonnées, la vidéo se débloque juste après.</DialogDescription>
+                  <DialogTitle>Recevez le programme complet</DialogTitle>
+                  <DialogDescription>Entrez vos coordonnées, on vous envoie tout par email.</DialogDescription>
                 </DialogHeader>
                 <form action={formAction} className="flex flex-col gap-4">
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -87,22 +86,15 @@ export function MasterclassGate({ videoUrl, posterUrl }: { videoUrl: string | nu
                   <DialogFooter>
                     <Button type="submit" disabled={pending} nativeButton={true} className="w-full sm:w-auto">
                       {pending && <Loader2 className="size-4 animate-spin" />}
-                      Débloquer la vidéo
+                      Envoyer
                     </Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
             </Dialog>
-          </div>
+          </>
         )}
       </div>
-
-      {state.success && (
-        <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-sm font-medium text-emerald">
-          <CheckCircle2 className="size-4" />
-          Inscription confirmée — la formation est à vous.
-        </p>
-      )}
     </div>
   );
 }

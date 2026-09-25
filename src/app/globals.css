@@ -176,6 +176,9 @@
   --gold-foreground: oklch(0.99 0 0);
   --emerald: oklch(0.72 0.15 155);
   --emerald-foreground: oklch(0.14 0.03 155);
+  /* Accent ponctuel jaune-vert, réservé au repère "120+ biens en gestion" du
+     profil façon Instagram — le reste de la page reste bleu uniquement. */
+  --lime: oklch(0.87 0.19 121);
 
   font-family: var(--font-mc-sans), sans-serif;
   color: var(--foreground);
@@ -191,10 +194,15 @@
 
 .theme-masterclass {
   background-color: var(--background);
+}
+
+/* Fond en grille — utilisé UNIQUEMENT sur la section héro (pas sur toute la
+   page) : .mc-grid est un bloc borné, donc la grille s'arrête net avec lui. */
+.mc-grid {
   position: relative;
 }
 
-.theme-masterclass::before {
+.mc-grid::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -206,9 +214,11 @@
     radial-gradient(ellipse 1200px 700px at 50% 0%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%);
   background-size: 44px 44px, 44px 44px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 100%);
+  mask-image: linear-gradient(to bottom, black, transparent 100%);
 }
 
-.theme-masterclass > * {
+.mc-grid > * {
   position: relative;
   z-index: 1;
 }
