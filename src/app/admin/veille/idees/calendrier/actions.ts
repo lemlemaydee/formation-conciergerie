@@ -22,6 +22,8 @@ function readIdeaFields(formData: FormData) {
   return {
     title: String(formData.get("title") ?? "").trim(),
     angle: String(formData.get("angle") ?? "").trim(),
+    category: textOrNull(formData, "category"),
+    funnel_stage: textOrNull(formData, "funnel_stage"),
     format_inspiration: textOrNull(formData, "format_inspiration"),
     pain_point: textOrNull(formData, "pain_point"),
     inspired_by: textOrNull(formData, "inspired_by"),

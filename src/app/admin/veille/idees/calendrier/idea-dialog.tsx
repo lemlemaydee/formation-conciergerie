@@ -14,11 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { SimpleState } from "@/app/admin/veille/idees/calendrier/actions";
+import { CATEGORY_LABELS, FUNNEL_STAGE_LABELS } from "@/app/admin/veille/idees/calendrier/constants";
 
 export interface CalendarIdeaDefaults {
   title?: string;
   angle?: string;
+  category?: string;
+  funnel_stage?: string;
   format_inspiration?: string;
   pain_point?: string;
   inspired_by?: string;
@@ -70,6 +74,39 @@ export function CalendarIdeaDialog({
               rows={3}
               required
             />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid gap-1.5">
+              <Label htmlFor="category">Catégorie</Label>
+              <Select name="category" defaultValue={defaults?.category || "conciergerie"} items={CATEGORY_LABELS}>
+                <SelectTrigger id="category" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1.5">
+              <Label htmlFor="funnel_stage">Étape de tunnel</Label>
+              <Select name="funnel_stage" defaultValue={defaults?.funnel_stage || "general"} items={FUNNEL_STAGE_LABELS}>
+                <SelectTrigger id="funnel_stage" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(FUNNEL_STAGE_LABELS).map(([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

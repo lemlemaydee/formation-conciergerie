@@ -14,11 +14,22 @@ import {
   updateCalendarIdeaStatus,
 } from "@/app/admin/veille/idees/calendrier/actions";
 import { STATUSES, type IdeaStatus } from "@/app/admin/veille/idees/constants";
+import {
+  CATEGORIES,
+  CATEGORY_LABELS,
+  FUNNEL_STAGES,
+  FUNNEL_STAGE_LABELS,
+  FUNNEL_STAGE_HINTS,
+  type CalendarCategory,
+  type FunnelStage,
+} from "@/app/admin/veille/idees/calendrier/constants";
 
 export interface CalendarIdeaRow {
   id: string;
   title: string;
   angle: string;
+  category: CalendarCategory | null;
+  funnel_stage: FunnelStage | null;
   format_inspiration: string | null;
   pain_point: string | null;
   inspired_by: string | null;
@@ -41,12 +52,20 @@ const STATUS_BADGE: Record<IdeaStatus, string> = {
   publie: "bg-emerald/15 text-emerald-foreground",
 };
 
+const FUNNEL_STAGE_BADGE: Record<FunnelStage, string> = {
+  general: "bg-secondary text-secondary-foreground",
+  concret: "bg-gold/15 text-gold-foreground",
+  cta: "bg-primary/10 text-primary",
+};
+
 const ALL = "__all__";
 
 function toDefaults(idea: CalendarIdeaRow): CalendarIdeaDefaults {
   return {
     title: idea.title,
     angle: idea.angle,
+    category: idea.category ?? "conciergerie",
+    funnel_stage: idea.funnel_stage ?? "general",
     format_inspiration: idea.format_inspiration ?? "",
     pain_point: idea.pain_point ?? "",
     inspired_by: idea.inspired_by ?? "",
@@ -57,13 +76,19 @@ function toDefaults(idea: CalendarIdeaRow): CalendarIdeaDefaults {
 
 export function CalendarBoard({ ideas }: { ideas: CalendarIdeaRow[] }) {
   const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState(ALL);
+  const [funnelFilter, setFunnelFilter] = useState(ALL);
   const [statusFilter, setStatusFilter] = useState(ALL);
 
+  const categoryItems = useMemo(() => ({ [ALL]: "Toutes les catégories", ...CATEGORY_LABELS }), []);
+  const funnelItems = useMemo(() => ({ [ALL]: "Toutes les étapes", ...FUNNEL_STAGE_LABELS }), []);
   const statusItems = useMemo(() => ({ [ALL]: "Tous les statuts", ...STATUS_LABELS }), []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return ideas.filter((idea) => {
+      if (categoryFilter !== ALL && idea.category !== categoryFilter) return false;
+      if (funnelFilter !== ALL && idea.funnel_stage !== funnelFilter) return false;
       if (statusFilter !== ALL && idea.status !== statusFilter) return false;
       if (!q) return true;
       return (
@@ -72,7 +97,7 @@ export function CalendarBoard({ ideas }: { ideas: CalendarIdeaRow[] }) {
         (idea.pain_point ?? "").toLowerCase().includes(q)
       );
     });
-  }, [ideas, search, statusFilter]);
+  }, [ideas, search, categoryFilter, funnelFilter, statusFilter]);
 
   const counts = useMemo(() => {
     const base: Record<IdeaStatus, number> = { idee: 0, a_tourner: 0, tourne: 0, publie: 0 };
@@ -80,7 +105,21 @@ export function CalendarBoard({ ideas }: { ideas: CalendarIdeaRow[] }) {
     return base;
   }, [ideas]);
 
-  const hasActiveFilters = search.trim() !== "" || statusFilter !== ALL;
+  const groups = useMemo(() => {
+    const visibleCategories = categoryFilter === ALL ? CATEGORIES : [categoryFilter as CalendarCategory];
+    return visibleCategories.map((category) => ({
+      category,
+      byStage: FUNNEL_STAGES.map((stage) => ({
+        stage,
+        items: filtered.filter((idea) => idea.category === category && idea.funnel_stage === stage),
+      })),
+      uncategorizedCount: filtered.filter((idea) => idea.category === category && !idea.funnel_stage).length,
+    }));
+  }, [filtered, categoryFilter]);
+
+  const noCategory = useMemo(() => filtered.filter((idea) => !idea.category), [filtered]);
+
+  const hasActiveFilters = search.trim() !== "" || categoryFilter !== ALL || funnelFilter !== ALL || statusFilter !== ALL;
 
   return (
     <div className="space-y-6">
@@ -102,6 +141,32 @@ export function CalendarBoard({ ideas }: { ideas: CalendarIdeaRow[] }) {
               className="pl-8"
             />
           </div>
+          <Select value={categoryFilter} items={categoryItems} onValueChange={(v) => setCategoryFilter(String(v))}>
+            <SelectTrigger className="w-auto min-w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={ALL}>Toutes les catégories</SelectItem>
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {CATEGORY_LABELS[c]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={funnelFilter} items={funnelItems} onValueChange={(v) => setFunnelFilter(String(v))}>
+            <SelectTrigger className="w-auto min-w-36">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={ALL}>Toutes les étapes</SelectItem>
+              {FUNNEL_STAGES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {FUNNEL_STAGE_LABELS[s]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Select value={statusFilter} items={statusItems} onValueChange={(v) => setStatusFilter(String(v))}>
             <SelectTrigger className="w-auto min-w-36">
               <SelectValue />
@@ -133,10 +198,62 @@ export function CalendarBoard({ ideas }: { ideas: CalendarIdeaRow[] }) {
           {hasActiveFilters ? "Aucune idée ne correspond à cette recherche." : "Aucune idée pour l'instant."}
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {filtered.map((idea) => (
-            <IdeaCard key={idea.id} idea={idea} />
-          ))}
+        <div className="flex flex-col gap-10">
+          {groups.map(({ category, byStage }) => {
+            const total = byStage.reduce((sum, g) => sum + g.items.length, 0);
+            if (total === 0) return null;
+            return (
+              <div key={category} className="flex flex-col gap-4">
+                <h2 className="flex items-center gap-2 text-base font-bold text-foreground">
+                  {CATEGORY_LABELS[category]}
+                  <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+                    {total}
+                  </span>
+                </h2>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  {byStage.map(({ stage, items }) => (
+                    <div key={stage} className="flex flex-col gap-3">
+                      <div>
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${FUNNEL_STAGE_BADGE[stage]}`}
+                        >
+                          {FUNNEL_STAGE_LABELS[stage]}
+                        </span>
+                        <p className="mt-1 text-xs text-muted-foreground">{FUNNEL_STAGE_HINTS[stage]}</p>
+                      </div>
+                      {items.length === 0 ? (
+                        <p className="rounded-xl border border-dashed border-border px-3 py-6 text-center text-xs text-muted-foreground">
+                          Aucune idée à cette étape
+                        </p>
+                      ) : (
+                        <div className="flex flex-col gap-3">
+                          {items.map((idea) => (
+                            <IdeaCard key={idea.id} idea={idea} />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {noCategory.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <h2 className="flex items-center gap-2 text-base font-bold text-foreground">
+                Sans catégorie
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+                  {noCategory.length}
+                </span>
+              </h2>
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                {noCategory.map((idea) => (
+                  <IdeaCard key={idea.id} idea={idea} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
