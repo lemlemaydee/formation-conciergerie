@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { IdeaBoard } from "@/app/admin/veille/idees/idea-board";
+import { VideoBoard } from "@/app/admin/veille/idees/video-board";
 
 export default async function AdminVeilleIdeesPage() {
   const supabase = await createClient();
-  const { data: ideas } = await supabase.from("content_ideas").select("*").order("order_index");
+  const [{ data: accounts }, { data: videos }] = await Promise.all([
+    supabase.from("veille_accounts").select("*").order("order_index"),
+    supabase.from("veille_videos").select("*").order("order_index"),
+  ]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -19,12 +22,12 @@ export default async function AdminVeilleIdeesPage() {
         </Link>
         <h1 className="mt-3 text-2xl font-bold text-foreground">Banque d&apos;idées vidéos</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Hooks, sujets et pain points repérés chez la concurrence — de quoi construire un calendrier de contenu et
-          des scripts. Classe par statut au fur et à mesure que tu tournes.
+          Toutes les vidéos repérées, triées par compte : hooks, formats, statistiques et ce que les commentaires
+          révèlent des pain points des viewers.
         </p>
       </div>
 
-      <IdeaBoard ideas={ideas ?? []} />
+      <VideoBoard videos={videos ?? []} accounts={accounts ?? []} />
     </div>
   );
 }
