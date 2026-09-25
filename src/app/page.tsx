@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, Gift, TrendingUp as TrendingUpIcon } from "lucide-react";
+import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, Gift, TrendingUp as TrendingUpIcon, LogIn } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   Accordion,
@@ -382,12 +382,31 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-border py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-xs text-muted-foreground sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} Formation Conciergerie —{" "}
-          <Link href="/ancien-site" className="underline-offset-2 hover:underline">
-            Voir le site complet
+      <footer className="border-t border-border py-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+              FC
+            </span>
+            <span className="text-base font-semibold tracking-tight text-foreground">Formation Conciergerie</span>
           </Link>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button render={<Link href="/connexion" />} nativeButton={false} variant="outline" size="sm">
+              <LogIn className="size-3.5" />
+              Connexion
+            </Button>
+            <Link
+              href="/ancien-site"
+              className="text-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+            >
+              Voir le site complet
+            </Link>
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Formation Conciergerie. Tous droits réservés.
+          </p>
         </div>
       </footer>
     </div>
