@@ -96,7 +96,7 @@ export async function setMasterclassVideoUrl(videoUrl: string) {
     const old = parseStorageUrl(existing.masterclass_video_url);
     if (old) await supabase.storage.from(old.bucket).remove([old.path]);
   }
-  revalidatePath("/masterclass");
+  revalidatePath("/");
   refresh();
 }
 
@@ -120,7 +120,7 @@ export async function setMasterclassPosterUrl(posterUrl: string) {
     const old = parseStorageUrl(existing.masterclass_video_poster_url);
     if (old) await supabase.storage.from(old.bucket).remove([old.path]);
   }
-  revalidatePath("/masterclass");
+  revalidatePath("/");
   refresh();
 }
 
@@ -144,6 +144,6 @@ export async function removeMasterclassVideo() {
     const parsed = parseStorageUrl(url);
     if (parsed) await supabase.storage.from(parsed.bucket).remove([parsed.path]);
   }
-  revalidatePath("/masterclass");
+  revalidatePath("/");
   refresh();
 }

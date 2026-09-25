@@ -56,11 +56,11 @@ export function MasterclassVideoSettings({
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
       <p className="text-sm font-semibold text-foreground">Vidéo de la formation gratuite</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        La vidéo de présentation (Mehdi &amp; Jacques) qui s&apos;affiche sur{" "}
-        <a href="/masterclass" target="_blank" rel="noreferrer" className="font-medium text-primary underline-offset-2 hover:underline">
-          /masterclass
+        La vidéo de présentation (Mehdi &amp; Jacques) qui s&apos;affiche sur la page d&apos;accueil (
+        <a href="/" target="_blank" rel="noreferrer" className="font-medium text-primary underline-offset-2 hover:underline">
+          /
         </a>
-        . Distincte de la vidéo de la page d&apos;accueil. Format paysage (16:9) recommandé.
+        ). Distincte de la vidéo hero de l&apos;ancien site. Format paysage (16:9) recommandé.
       </p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">

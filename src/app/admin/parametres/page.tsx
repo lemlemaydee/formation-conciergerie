@@ -21,14 +21,14 @@ export default async function AdminParametresPage() {
         </p>
       </div>
 
-      <HeroVideoSettings
-        initialVideoUrl={settings?.hero_video_url ?? null}
-        initialPosterUrl={settings?.hero_video_poster_url ?? null}
-      />
-
       <MasterclassVideoSettings
         initialVideoUrl={settings?.masterclass_video_url ?? null}
         initialPosterUrl={settings?.masterclass_video_poster_url ?? null}
+      />
+
+      <HeroVideoSettings
+        initialVideoUrl={settings?.hero_video_url ?? null}
+        initialPosterUrl={settings?.hero_video_poster_url ?? null}
       />
 
       <PlaceholderSection

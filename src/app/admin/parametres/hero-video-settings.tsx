@@ -56,7 +56,11 @@ export function HeroVideoSettings({
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
       <p className="text-sm font-semibold text-foreground">Vidéo de présentation (hero)</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        Remplace la vignette de droite sur la page d&apos;accueil. Format paysage (16:9) recommandé.
+        Remplace la vignette de droite sur{" "}
+        <a href="/ancien-site" target="_blank" rel="noreferrer" className="font-medium text-primary underline-offset-2 hover:underline">
+          /ancien-site
+        </a>
+        , l&apos;ancienne page d&apos;accueil mise de côté. Format paysage (16:9) recommandé.
       </p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
