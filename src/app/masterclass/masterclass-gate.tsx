@@ -46,7 +46,14 @@ export function MasterclassGate({ videoUrl, posterUrl }: { videoUrl: string | nu
 
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger
-                render={<Button size="lg" className="h-14 px-8 text-base font-semibold" nativeButton={true} />}
+                render={
+                  <Button
+                    size="lg"
+                    className="h-14 px-8 text-base font-semibold"
+                    style={{ boxShadow: "0 10px 36px -6px color-mix(in oklch, var(--primary) 55%, transparent)" }}
+                    nativeButton={true}
+                  />
+                }
               >
                 Accéder à la formation gratuite
               </DialogTrigger>

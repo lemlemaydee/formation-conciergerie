@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Sprout, TrendingUp, Gem, Sparkles, ShieldCheck, Gift, TrendingUp as TrendingUpIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { archivo, inter } from "@/app/masterclass/fonts";
 import {
   Accordion,
   AccordionContent,
@@ -17,10 +17,19 @@ import { ClientAvatars } from "@/components/landing/client-avatars";
 import { MasterclassGate } from "@/app/masterclass/masterclass-gate";
 import { RoadmapTimeline } from "@/app/masterclass/roadmap-timeline";
 import { SuccessGrid } from "@/app/masterclass/success-grid";
+import { ProofMarquee } from "@/app/masterclass/proof-marquee";
+import { TestimonialCarousel } from "@/app/masterclass/testimonial-carousel";
+import { archivo, inter } from "@/app/masterclass/fonts";
 
 export const metadata: Metadata = {
   title: "Formation gratuite — Formation Conciergerie",
   description: "Comment signer votre premier propriétaire et lancer votre conciergerie Airbnb, du studio à la villa de luxe.",
+};
+
+const BADGE_BLUE = "gap-1.5 border-primary/20 bg-primary/10 text-primary";
+
+const CTA_GLOW: CSSProperties = {
+  boxShadow: "0 10px 36px -6px color-mix(in oklch, var(--primary) 55%, transparent)",
 };
 
 const POUR_QUI = [
@@ -120,11 +129,11 @@ export default async function MasterclassPage() {
           <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
             <Reveal className="flex flex-col items-center gap-4">
               <div className="flex flex-wrap items-center justify-center gap-2">
-                <Badge variant="secondary" className="gap-1.5">
-                  <span className="size-1.5 rounded-full bg-emerald" />
+                <Badge className={BADGE_BLUE}>
+                  <span className="size-1.5 rounded-full bg-primary" />
                   Nouveau
                 </Badge>
-                <Badge variant="outline" className="gap-1.5">
+                <Badge className={BADGE_BLUE}>
                   <Sparkles className="size-3" />
                   Formation gratuite
                 </Badge>
@@ -138,7 +147,7 @@ export default async function MasterclassPage() {
                 La méthode exacte de Mehdi &amp; Jacques, qui gèrent déjà 120+ biens entre Monaco et la Côte
                 d&apos;Azur — du studio à la villa de luxe.
               </p>
-              <Badge variant="secondary" className="gap-1.5 bg-gold text-gold-foreground">
+              <Badge className={BADGE_BLUE}>
                 <ShieldCheck className="size-3" />
                 Aucune expérience requise
               </Badge>
@@ -157,50 +166,7 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border">
-          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
-            <Reveal className="flex flex-col items-center gap-4">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
-                <Gift className="size-6" />
-              </span>
-              <Badge variant="outline">Aucun piège</Badge>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-                Pourquoi cette formation est <GradientText>gratuite</GradientText>
-              </h2>
-              <p className="max-w-xl text-lg text-pretty text-muted-foreground">
-                On ne vous vend rien sur cette page. On préfère vous montrer notre méthode plutôt que vous en parler —
-                si elle vous convainc, vous pourrez ensuite découvrir nos formations complètes, sans aucune
-                obligation.
-              </p>
-              <p className="text-lg font-bold text-foreground">
-                Vous gagnez du temps, on vous démontre qu&apos;on sait de quoi on parle.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        <section
-          className="border-t border-border bg-muted/40"
-        >
-          <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-            <Reveal className="mx-auto max-w-2xl text-center">
-              <Badge variant="outline">Résultats</Badge>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
-                Des profils différents, <GradientText>un même point de départ</GradientText>
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Voici ce que certains de nos élèves ont obtenu en appliquant la méthode.
-              </p>
-            </Reveal>
-            <div className="mt-12">
-              <SuccessGrid />
-            </div>
-            <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-muted-foreground">
-              Résultats individuels présentés à titre d&apos;exemple. Ils dépendent du marché, du temps investi et de
-              l&apos;application de la méthode, et ne constituent pas une promesse de résultat identique.
-            </p>
-          </div>
-        </section>
+        <ProofMarquee />
 
         <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -219,10 +185,71 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/40">
+        <section className="border-t border-border">
+          <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <Badge className={BADGE_BLUE}>Témoignages</Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Ce qu&apos;en disent <GradientText>nos élèves</GradientText>
+              </h2>
+            </Reveal>
+            <div className="mt-12">
+              <TestimonialCarousel />
+            </div>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-muted-foreground">
+              Témoignages présentés à titre d&apos;exemple en attendant la publication de nos premiers vrais retours
+              élèves.
+            </p>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
+          <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <Badge className={BADGE_BLUE}>Résultats</Badge>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Des profils différents, <GradientText>un même point de départ</GradientText>
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Voici ce que certains de nos élèves ont obtenu en appliquant la méthode.
+              </p>
+            </Reveal>
+            <div className="mt-12">
+              <SuccessGrid />
+            </div>
+            <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-muted-foreground">
+              Résultats individuels présentés à titre d&apos;exemple. Ils dépendent du marché, du temps investi et de
+              l&apos;application de la méthode, et ne constituent pas une promesse de résultat identique.
+            </p>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
+          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
+            <Reveal className="flex flex-col items-center gap-4">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <Gift className="size-6" />
+              </span>
+              <Badge className={BADGE_BLUE}>Aucun piège</Badge>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+                Pourquoi cette formation est <GradientText>gratuite</GradientText>
+              </h2>
+              <p className="max-w-xl text-lg text-pretty text-muted-foreground">
+                On ne vous vend rien sur cette page. On préfère vous montrer notre méthode plutôt que vous en parler —
+                si elle vous convainc, vous pourrez ensuite découvrir nos formations complètes, sans aucune
+                obligation.
+              </p>
+              <p className="text-lg font-bold text-foreground">
+                Vous gagnez du temps, on vous démontre qu&apos;on sait de quoi on parle.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
-              <Badge variant="outline">3 étapes</Badge>
+              <Badge className={BADGE_BLUE}>3 étapes</Badge>
               <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
                 Comment accéder à la <GradientText>formation</GradientText>
               </h2>
@@ -253,6 +280,7 @@ export default async function MasterclassPage() {
                 nativeButton={false}
                 size="lg"
                 className="h-14 px-8 text-base font-semibold"
+                style={CTA_GLOW}
               >
                 Accéder à la formation gratuite
               </Button>
@@ -284,10 +312,10 @@ export default async function MasterclassPage() {
           </div>
         </section>
 
-        <section className="border-t border-border bg-muted/40">
+        <section className="border-t border-border">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <Reveal className="mx-auto max-w-2xl text-center">
-              <Badge variant="outline" className="gap-1.5">
+              <Badge className={BADGE_BLUE}>
                 <TrendingUpIcon className="size-3" />
                 Pourquoi maintenant
               </Badge>
@@ -328,7 +356,9 @@ export default async function MasterclassPage() {
                     value={item.q}
                     className="rounded-2xl border border-border bg-card px-5 shadow-sm"
                   >
-                    <AccordionTrigger className="py-5 text-left hover:no-underline">{item.q}</AccordionTrigger>
+                    <AccordionTrigger className="py-5 text-left text-foreground hover:no-underline">
+                      {item.q}
+                    </AccordionTrigger>
                     <AccordionContent className="pb-5 text-muted-foreground">{item.a}</AccordionContent>
                   </AccordionItem>
                 ))}
@@ -341,13 +371,13 @@ export default async function MasterclassPage() {
           className="relative overflow-hidden border-t border-border"
           style={{
             background:
-              "radial-gradient(ellipse 420px 220px at 8% 65%, color-mix(in oklch, var(--gold) 22%, transparent), transparent 65%), " +
-              "radial-gradient(ellipse 420px 220px at 92% 65%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 65%)",
+              "radial-gradient(ellipse 480px 240px at 15% 60%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 65%), " +
+              "radial-gradient(ellipse 480px 240px at 85% 60%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 65%)",
           }}
         >
           <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 sm:py-28">
             <Reveal>
-              <Badge variant="outline">Démarrer</Badge>
+              <Badge className={BADGE_BLUE}>Démarrer</Badge>
               <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
                 Ne laissez pas cette formation finir <GradientText>dans vos favoris</GradientText>
               </h2>
@@ -359,6 +389,7 @@ export default async function MasterclassPage() {
                 nativeButton={false}
                 size="lg"
                 className="mt-8 h-14 px-8 text-base font-semibold"
+                style={CTA_GLOW}
               >
                 Accéder à la formation gratuite
               </Button>

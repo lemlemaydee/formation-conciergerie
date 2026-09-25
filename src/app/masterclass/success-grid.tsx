@@ -6,14 +6,7 @@ interface Story {
   context: string;
   result: string;
   description: string;
-  accent: "primary" | "gold" | "emerald";
 }
-
-const ACCENT_BG: Record<Story["accent"], string> = {
-  primary: "bg-primary text-primary-foreground",
-  gold: "bg-gold text-gold-foreground",
-  emerald: "bg-emerald text-emerald-foreground",
-};
 
 // Exemples illustratifs en attendant de vraies success stories élèves — à remplacer.
 const STORIES: Story[] = [
@@ -23,7 +16,6 @@ const STORIES: Story[] = [
     context: "Ex-assistante RH",
     result: "+12 logements en gestion en 4 mois",
     description: "Elle a démarché ses premiers propriétaires en parallèle de son poste, avant de se mettre à son compte à temps plein.",
-    accent: "primary",
   },
   {
     initials: "K",
@@ -31,7 +23,6 @@ const STORIES: Story[] = [
     context: "24 ans, apprenti électricien",
     result: "3 villas haut de gamme en 5 mois",
     description: "Un gros travail de prospection locale, puis le bouche-à-oreille lui a apporté ses clients suivants.",
-    accent: "gold",
   },
   {
     initials: "I",
@@ -39,7 +30,6 @@ const STORIES: Story[] = [
     context: "Étudiante en BTS Tourisme",
     result: "5 biens signés en 4 mois",
     description: "Sans aucune expérience en immobilier, grâce à une présence en ligne travaillée dès le premier mois.",
-    accent: "emerald",
   },
   {
     initials: "B",
@@ -47,7 +37,6 @@ const STORIES: Story[] = [
     context: "Ex-commercial en CDI",
     result: "2 Airbnb le 1er mois, 4 de plus le suivant",
     description: "Il a ensuite recruté une équipe de ménage dédiée et gère aujourd'hui des biens jusqu'à 8 chambres.",
-    accent: "primary",
   },
 ];
 
@@ -58,9 +47,7 @@ export function SuccessGrid() {
         <RevealItem key={story.name}>
           <article className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
             <div className="flex items-center gap-3">
-              <span
-                className={`flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-bold ${ACCENT_BG[story.accent]}`}
-              >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                 {story.initials}
               </span>
               <div className="min-w-0">

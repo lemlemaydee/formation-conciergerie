@@ -170,12 +170,15 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 14%);
   --ring: oklch(0.62 0.19 263.3 / 0.5);
-  --gold: oklch(0.8 0.14 82);
-  --gold-foreground: oklch(0.2 0.05 82);
+  /* Pas de jaune sur cette page : --gold est repointé vers un bleu clair au
+     cas où un composant partagé l'utiliserait encore. */
+  --gold: oklch(0.74 0.13 263.3);
+  --gold-foreground: oklch(0.99 0 0);
   --emerald: oklch(0.72 0.15 155);
   --emerald-foreground: oklch(0.14 0.03 155);
 
   font-family: var(--font-mc-sans), sans-serif;
+  color: var(--foreground);
 }
 
 .theme-masterclass-tokens h1,
@@ -200,11 +203,9 @@
   background-image:
     linear-gradient(to right, color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
-    radial-gradient(ellipse 1200px 700px at 50% -5%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 70%);
+    radial-gradient(ellipse 1200px 700px at 50% 0%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 70%);
   background-size: 44px 44px, 44px 44px, 100% 100%;
   background-repeat: repeat, repeat, no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, black, black 60%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black, black 60%, transparent 100%);
 }
 
 .theme-masterclass > * {

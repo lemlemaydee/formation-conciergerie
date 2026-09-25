@@ -116,6 +116,7 @@ export function RoadmapTimeline() {
           nativeButton={false}
           size="lg"
           className="h-14 px-8 text-base font-semibold"
+          style={{ boxShadow: "0 10px 36px -6px color-mix(in oklch, var(--primary) 55%, transparent)" }}
         >
           Accéder à la formation gratuite
           <ArrowRight className="size-4" />
